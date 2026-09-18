@@ -1,0 +1,331 @@
+/* Base Section */
+.excellenceSection {
+  width: 100%;
+  background-color: #F8F9FE; /* Very light soft blue/white */
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+/* Background Effects */
+.bgGrid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.bgGlow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.glowLeft {
+  top: -100px;
+  left: -200px;
+  background: rgba(168, 85, 247, 0.08); /* Soft purple glow */
+}
+
+.glowRight {
+  bottom: -200px;
+  right: -100px;
+  background: rgba(59, 130, 246, 0.08); /* Soft blue glow */
+}
+
+/* Main Container Layout */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 10;
+  gap: 4rem;
+}
+
+@media (max-width: 1100px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* -------------------------------------------
+   LEFT AREA: ORBITAL NEUMORPHISM
+   ------------------------------------------- */
+.orbitalArea {
+  position: relative;
+  width: 450px;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Central Neumorphic Circle */
+.centerCircle {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: #F8F9FE;
+  /* Crucial Neumorphic Shadow: Dark shadow bottom-right, White highlight top-left */
+  box-shadow: 20px 20px 40px rgba(180, 190, 215, 0.5), 
+              -20px -20px 40px rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  position: relative;
+}
+
+.percentage {
+  font-family: var(--font-display);
+  font-size: 5.5rem;
+  font-weight: 800;
+  color: #184CD8;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.03em;
+}
+
+.percentSymbol {
+  font-size: 3rem;
+}
+
+.centerText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-sans);
+  color: #0A0F2C;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+/* Orbital Rings */
+.orbitRing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(168, 85, 247, 0.15); /* Faint purplish/blue border */
+  z-index: 1;
+}
+
+.ring1 { width: 330px; height: 330px; border-color: rgba(59, 130, 246, 0.15); }
+.ring2 { width: 420px; height: 420px; border-color: rgba(168, 85, 247, 0.15); }
+.ring3 { width: 510px; height: 510px; border: 1px dashed rgba(59, 130, 246, 0.2); }
+
+/* Floating Badges */
+.floatingBadge {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 10px 10px 20px rgba(180, 190, 215, 0.3), 
+              -5px -5px 15px rgba(255, 255, 255, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: floatOrb 4s ease-in-out infinite;
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.badgeTop { top: 0; left: 25%; animation-delay: 0s; }
+.badgeRight { top: 15%; right: 0; animation-delay: 1s; }
+.badgeBottom { bottom: 5%; left: 45%; animation-delay: 0.5s; }
+.badgeLeft { top: 60%; left: -5%; animation-delay: 1.5s; }
+
+/* Icon Colors */
+.iconRed { color: #EF4444; }
+.iconBlue { color: #3B82F6; }
+.iconOrange { color: #F97316; }
+.iconTeal { color: #14B8A6; }
+
+/* -------------------------------------------
+   CENTER AREA: TYPOGRAPHY & PILLS
+   ------------------------------------------- */
+.textArea {
+  flex: 1;
+  padding: 0 2rem;
+  max-width: 550px;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #184CD8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #0A0F2C;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.gradientText {
+  background: linear-gradient(135deg, #3B82F6 0%, #A855F7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #4B5563;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.pillContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pill {
+  padding: 0.6rem 1.5rem;
+  border-radius: 99px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(59, 130, 246, 0.05);
+  color: #0A0F2C;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.pill:hover {
+  background: #184CD8;
+  color: white;
+  border-color: #184CD8;
+}
+
+@media (max-width: 1100px) {
+  .pillContainer {
+    justify-content: center;
+  }
+}
+
+/* -------------------------------------------
+   RIGHT AREA: NEUMORPHIC CARD
+   ------------------------------------------- */
+.cardArea {
+  flex-shrink: 0;
+}
+
+.achievementCard {
+  width: 240px;
+  background: #F8F9FE;
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  /* Neumorphic Soft Shadow */
+  box-shadow: 15px 15px 35px rgba(180, 190, 215, 0.4), 
+              -15px -15px 35px rgba(255, 255, 255, 1);
+  position: relative;
+  text-align: left;
+}
+
+.cardEyebrow {
+  font-size: 0.9rem;
+  color: #4B5563;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.cardValue {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #0A0F2C;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.cardLabel {
+  font-size: 0.95rem;
+  color: #184CD8;
+  font-weight: 700;
+}
+
+.cardIconWrapper {
+  position: absolute;
+  bottom: 2rem;
+  right: -20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #F8F9FE;
+  /* Neumorphic Pop for the Icon */
+  box-shadow: 10px 10px 20px rgba(180, 190, 215, 0.4), 
+              -10px -10px 20px rgba(255, 255, 255, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .excellenceSection {
+    padding: 3rem 0;
+  }
+  .orbitalArea {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 2rem;
+  }
+  .centerCircle {
+    width: 180px;
+    height: 180px;
+  }
+  .percentage {
+    font-size: 3.5rem;
+  }
+  .ring1 { width: 220px; height: 220px; }
+  .ring2 { width: 280px; height: 280px; }
+  .ring3 { width: 340px; height: 340px; }
+  
+  .badgeTop { left: 15%; }
+  .badgeRight { top: 5%; }
+  
+  .title {
+    font-size: 2.2rem;
+  }
+  .achievementCard {
+    width: 100%;
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .cardIconWrapper {
+    right: 50%;
+    transform: translateX(50%);
+    bottom: -30px;
+  }
+}

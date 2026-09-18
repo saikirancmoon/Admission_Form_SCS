@@ -1,0 +1,60 @@
+.home3Container {
+  /* Design Tokens for Home 3 */
+  --primary-color: #0056D2;
+  --secondary-color: #FFB400;
+  --background-color: #FFFFFF;
+  --text-color: #1A1A1A;
+  --text-muted: #4A5568;
+  --light-grey: #F7FAFC;
+  --border-color: #E2E8F0;
+  
+  --font-primary: var(--font-plus-jakarta), sans-serif;
+  --font-secondary: var(--font-poppins), sans-serif;
+  
+  /* Premium Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
+  --spacing-xxl: 8rem;
+
+  /* Clean Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
+  --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
+
+  /* Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  font-family: var(--font-primary);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  min-height: 100vh;
+}
+
+.home3Container * {
+  box-sizing: border-box;
+}
+
+.home3Container h1, 
+.home3Container h2, 
+.home3Container h3, 
+.home3Container h4, 
+.home3Container h5, 
+.home3Container h6 {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.home3Container p {
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.home3Container a {
+  text-decoration: none;
+  color: inherit;
+}

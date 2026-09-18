@@ -1,0 +1,130 @@
+.section {
+  padding: 6rem 2rem;
+  background-color: var(--background-color);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.sliderContainer {
+  position: relative;
+  padding: 0 1rem;
+}
+
+.swiper {
+  padding-bottom: 4rem !important; /* Space for pagination */
+}
+
+.card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+}
+
+.quoteIcon {
+  color: var(--light-grey);
+  margin-bottom: 1.5rem;
+}
+
+.card:hover .quoteIcon {
+  color: #f0f6ff;
+}
+
+.text {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  flex-grow: 1;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+.authorImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.authorName {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  margin-bottom: 0.25rem;
+  font-family: var(--font-secondary);
+}
+
+.authorRole {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Swiper custom styles */
+:global(.swiper-button-next),
+:global(.swiper-button-prev) {
+  color: var(--primary-color) !important;
+  background-color: #FFFFFF;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+}
+
+:global(.swiper-button-next::after),
+:global(.swiper-button-prev::after) {
+  font-size: 1.2rem !important;
+  font-weight: bold;
+}
+
+:global(.swiper-pagination-bullet) {
+  background-color: var(--border-color) !important;
+  opacity: 1 !important;
+  width: 10px !important;
+  height: 10px !important;
+  transition: all 0.3s ease !important;
+}
+
+:global(.swiper-pagination-bullet-active) {
+  background-color: var(--primary-color) !important;
+  width: 24px !important;
+  border-radius: 5px !important;
+}

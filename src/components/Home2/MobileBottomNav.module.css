@@ -1,0 +1,49 @@
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom); /* iOS safe area */
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #64748B;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  flex: 1;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.navItem span {
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+.navItem:hover, .navItem:active {
+  color: var(--color-primary);
+}
+
+.navItem.active {
+  color: var(--color-primary);
+}
+
+.navItem.active svg {
+  stroke-width: 2.5;
+  filter: drop-shadow(0 2px 4px rgba(24, 76, 216, 0.3));
+}

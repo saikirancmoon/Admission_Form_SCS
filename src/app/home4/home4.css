@@ -1,0 +1,65 @@
+.home4-theme {
+  --color-primary: #184CD8;
+  --color-secondary: #0D47A1;
+  --font-display: var(--font-outfit);
+  --font-sans: var(--font-inter);
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Base styles for the dark theme */
+.home4-theme h1, 
+.home4-theme h2, 
+.home4-theme h3, 
+.home4-theme h4, 
+.home4-theme h5, 
+.home4-theme h6 {
+  font-family: var(--font-display);
+}
+
+.home4-theme p, 
+.home4-theme span, 
+.home4-theme a, 
+.home4-theme button {
+  font-family: var(--font-sans);
+}
+
+/* -------------------------------------
+   BENTO GRID SYSTEM
+   ------------------------------------- */
+.bentoSection {
+  background-color: #F8F9FE; /* The outer background */
+  padding: 4rem 0;
+  width: 100%;
+}
+
+.bentoContainer {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Tighter gap matching screenshot */
+}
+
+.bentoRowFull {
+  width: 100%;
+}
+
+.bentoRowSplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.bentoCardWrapper {
+  display: flex;
+  height: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 1200px) {
+  .bentoRowSplit {
+    grid-template-columns: 1fr;
+  }
+}

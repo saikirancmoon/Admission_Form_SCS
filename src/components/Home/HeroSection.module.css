@@ -1,0 +1,169 @@
+.heroSection {
+  position: relative;
+  height: 100vh;
+  min-height: 800px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundContainer {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 120%; /* Extra height for parallax */
+  z-index: -1;
+}
+
+.backgroundImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(23, 59, 108, 0.8) 0%,
+    rgba(23, 59, 108, 0.4) 50%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+.contentContainer {
+  position: relative;
+  z-index: 2;
+  max-width: 1510px;
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5rem; /* offset for header */
+}
+
+.textContent {
+  max-width: 700px;
+}
+
+.eyebrowContainer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 99px;
+  margin-bottom: 2rem;
+}
+
+.eyebrowDot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-electric-blue);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--color-electric-blue);
+}
+
+.eyebrowText {
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.textLineWrapper {
+  overflow: hidden;
+  line-height: 1.1;
+}
+
+.heroTextLine {
+  display: block;
+}
+
+.title {
+  color: white;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+
+.title strong {
+  font-weight: 800;
+}
+
+.description {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.6;
+  max-width: 500px;
+  margin-bottom: 3rem;
+}
+
+.actionContainer {
+  overflow: hidden;
+  padding-top: 10px;
+}
+
+.floatingCardContainer {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .floatingCardContainer {
+    display: block;
+    align-self: flex-end;
+    margin-bottom: 5rem;
+  }
+}
+
+.statsCard {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 3rem;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-electric-blue);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statDivider {
+  width: 1px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.2);
+}

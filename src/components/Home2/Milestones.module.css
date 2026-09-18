@@ -1,0 +1,229 @@
+.container {
+  width: 100%;
+  background: linear-gradient(180deg, #F8F9FE 0%, #FFFFFF 100%);
+  border-radius: 32px;
+  padding: 3rem 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.bgElements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.glowBlob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.glow1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(24, 76, 216, 0.15); /* Primary */
+  top: -100px;
+  right: -100px;
+}
+
+.glow2 {
+  width: 500px;
+  height: 500px;
+  background: rgba(234, 179, 8, 0.15); /* Gold */
+  bottom: -200px;
+  left: -100px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  gap: 1rem;
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(24, 76, 216, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+}
+
+.title {
+  color: #04061A;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.subtitle {
+  color: #64748B;
+  font-size: 1.125rem;
+  max-width: 600px;
+  margin-top: 0.5rem;
+}
+
+/* Counter Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  z-index: 2;
+  margin-bottom: 0.5rem;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+  transition: transform 0.4s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-10px);
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 20px rgba(24, 76, 216, 0.2);
+}
+
+.statCard:nth-child(2) .iconWrapper {
+  background: #EAB308;
+  box-shadow: 0 10px 20px rgba(234, 179, 8, 0.2);
+}
+
+.statCard:nth-child(3) .iconWrapper {
+  background: #10B981;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+}
+
+.numberWrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.number {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #04061A;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.suffix {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.statCard:nth-child(2) .suffix {
+  color: #EAB308;
+}
+
+.statCard:nth-child(3) .suffix {
+  color: #10B981;
+}
+
+.label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #475569;
+  margin-top: 0.5rem;
+}
+
+/* Timeline/Awards Grid */
+.awardsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  z-index: 2;
+}
+
+.awardCard {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+  transition: all 0.3s ease;
+}
+
+.awardCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.08);
+}
+
+.awardYear {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: rgba(24, 76, 216, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  align-self: flex-start;
+}
+
+.awardTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #04061A;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .awardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  .awardsGrid {
+    grid-template-columns: 1fr;
+  }
+}

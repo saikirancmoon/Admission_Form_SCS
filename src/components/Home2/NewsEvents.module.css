@@ -1,0 +1,239 @@
+.bentoCard {
+  width: 100%;
+  height: 380px;
+  background-color: #06091F;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #D946EF; /* Pinkish accent */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+}
+
+.viewAllBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 99px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.viewAllBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.contentGrid {
+  display: flex;
+  gap: 1.5rem;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Featured Card */
+.featuredCard {
+  flex: 1;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.featuredCard:hover {
+  transform: translateY(-2px);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
+  z-index: 1;
+}
+
+.playBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 2;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.playBtn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.featuredContent {
+  position: relative;
+  z-index: 2;
+  padding-right: 2rem;
+}
+
+.featuredContent h3 {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.date {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  color: #EAB308;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.featuredContent p {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+}
+
+.featuredArrow {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  color: white;
+  z-index: 2;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.featuredCard:hover .featuredArrow {
+  opacity: 1;
+}
+
+/* Right List Container */
+.listContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.listItem {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.listItem:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(4px);
+}
+
+.listImg {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.listContent {
+  flex: 1;
+}
+
+.listContent h4 {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.listContent span {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+
+.listArrow {
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.3s ease;
+}
+
+.listItem:hover .listArrow {
+  color: white;
+}
+
+@media (max-width: 700px) {
+  .contentGrid {
+    flex-direction: column;
+  }
+  .bentoCard {
+    height: auto;
+    min-height: 500px;
+    padding: 1.5rem;
+  }
+  .featuredCard {
+    min-height: 250px;
+  }
+}

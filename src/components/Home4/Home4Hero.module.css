@@ -1,0 +1,22 @@
+.heroSection {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: block;
+  background-color: #F8F9FE;
+  padding: 1.5rem 2rem;
+}
+
+.swiperContainer {
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.bgImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}

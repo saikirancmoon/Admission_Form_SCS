@@ -1,0 +1,317 @@
+/* Global Section Styles */
+.chooseUsSection {
+  width: 100%;
+  background-color: #F8F9FE; /* Very light subtle blue from screenshot */
+  padding: 6rem 0;
+  position: relative;
+  overflow: hidden;
+  /* Subtle dot pattern overlay */
+  background-image: radial-gradient(rgba(0, 0, 0, 0.03) 2px, transparent 2px);
+  background-size: 40px 40px;
+}
+
+.container {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  gap: 3rem;
+  height: 600px; /* Fixed height for 2-row layout */
+}
+
+/* -------------------------------------
+   LEFT COLUMN 
+   ------------------------------------- */
+.leftCol {
+  flex: 0 0 350px; /* Increased to allow single-line CHOOSE US */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+.orbContainer {
+  margin-bottom: 2rem;
+}
+
+.floatingOrb {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #5CB3FF, #A155E8, #1E3A8A);
+  box-shadow: 0 15px 30px rgba(161, 85, 232, 0.3), inset -10px -10px 20px rgba(0,0,0,0.2), inset 10px 10px 20px rgba(255,255,255,0.8);
+  animation: floatOrb 6s ease-in-out infinite;
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.textContent {
+  margin-bottom: 3rem;
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #184CD8;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: #0A0F2C;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.navButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+.navBtn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid rgba(24, 76, 216, 0.2);
+  background: transparent;
+  color: #184CD8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navBtn:hover {
+  background: #184CD8;
+  color: white;
+  border-color: #184CD8;
+  box-shadow: 0 10px 20px rgba(24, 76, 216, 0.2);
+}
+
+.navBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------
+   RIGHT COLUMN (Swiper Grid) 
+   ------------------------------------- */
+.rightCol {
+  flex: 1;
+  min-width: 0; /* Prevents flexbox overflow */
+  height: 100%;
+}
+
+.swiperContainer {
+  width: 100%;
+  height: 100%;
+}
+
+/* Fix Swiper Grid styling */
+:global(.swiper-grid-column > .swiper-wrapper) {
+  flex-wrap: wrap !important;
+  flex-direction: column !important;
+}
+
+.swiperSlide {
+  height: calc((100% - 20px) / 2) !important; /* 20px is spaceBetween */
+  margin-top: 0 !important;
+}
+
+/* -------------------------------------
+   CARD DESIGN
+   ------------------------------------- */
+.card {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+/* Background Image & Mask */
+.cardBg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  /* Use mask to fade the image into the gradient on the left */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 100%);
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+  transition: transform 0.7s ease;
+}
+
+.card:hover .cardBg {
+  transform: scale(1.1);
+}
+
+/* Content Layout inside Card */
+.cardContent {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cardIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: auto; /* Pushes text to bottom */
+}
+
+.cardTextWrapper {
+  margin-bottom: 0;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.cardSubtitle {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+}
+
+/* Bottom Right Arrow Button */
+.cardBtn {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* We set stroke color inside the theme classes */
+
+.card:hover .cardBtn {
+  transform: translateX(5px);
+}
+
+/* -------------------------------------
+   THEME CLASSES (Vibrant Gradients)
+   ------------------------------------- */
+
+/* 1. Blue */
+.cardBlue {
+  background: linear-gradient(135deg, #0A43F5 0%, #3B82F6 100%);
+}
+.cardBlue .cardBtn { color: #0A43F5; }
+
+/* 2. Red / Orange */
+.cardRed {
+  background: linear-gradient(135deg, #F43F5E 0%, #FB923C 100%);
+}
+.cardRed .cardBtn { color: #F43F5E; }
+
+/* 3. Purple */
+.cardPurple {
+  background: linear-gradient(135deg, #8B5CF6 0%, #D946EF 100%);
+}
+.cardPurple .cardBtn { color: #8B5CF6; }
+
+/* 4. Teal */
+.cardTeal {
+  background: linear-gradient(135deg, #0D9488 0%, #2DD4BF 100%);
+}
+.cardTeal .cardBtn { color: #0D9488; }
+
+/* 5. Dark Blue */
+.cardDarkBlue {
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+}
+.cardDarkBlue .cardBtn { color: #1E3A8A; }
+
+/* 6. Yellow / Gold */
+.cardYellow {
+  background: linear-gradient(135deg, #EAB308 0%, #FBBF24 100%);
+}
+.cardYellow .cardBtn { color: #EAB308; }
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    gap: 2rem;
+  }
+  .leftCol {
+    flex: none;
+    text-align: center;
+    align-items: center;
+  }
+  .title {
+    white-space: normal;
+  }
+  .rightCol {
+    height: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chooseUsSection {
+    padding: 4rem 0;
+  }
+  .title {
+    font-size: 2.5rem;
+  }
+  .rightCol {
+    height: 800px;
+  }
+  :global(.swiper-grid-column > .swiper-wrapper) {
+    flex-direction: row !important;
+  }
+  .swiperSlide {
+    height: 100% !important;
+  }
+}

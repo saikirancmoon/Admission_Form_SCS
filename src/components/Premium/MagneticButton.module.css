@@ -1,0 +1,64 @@
+.magneticButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: transparent;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  z-index: 1;
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.primary {
+  background: var(--color-primary);
+  color: var(--color-bg-white);
+  box-shadow: var(--shadow-md);
+}
+
+.primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+  z-index: 0;
+}
+
+.primary:hover::before {
+  left: 100%;
+}
+
+.primary:hover {
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.outline {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.outline:hover {
+  background: var(--color-bg-mesh);
+}
