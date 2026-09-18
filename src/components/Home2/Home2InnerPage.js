@@ -1257,6 +1257,12 @@ function AdmissionsPage({ page }) {
                   placeholder="Enter Aadhaar No"
                 />
                 <AdmissionField
+                  label="Father/Guardian Occupation"
+                  name="father_occupation"
+                  required
+                  placeholder="Enter Father/Guardian Occupation"
+                />
+                <AdmissionField
                   label="Quota"
                   name="quota_id"
                   required
@@ -1278,6 +1284,12 @@ function AdmissionsPage({ page }) {
                 {showProFields ? (
                   <>
                     <AdmissionField
+                      label="Referred By (Employee ID)"
+                      name="referred_employee_id"
+                      required
+                      placeholder="Referred By (Employee ID) - ex. HYDxxxxx"
+                    />
+                    <AdmissionField
                       label="Referred Mobile"
                       name="referred_mobile"
                       type="tel"
@@ -1293,16 +1305,10 @@ function AdmissionsPage({ page }) {
                         )
                       }
                     />
+                    <input type="hidden" name="incentive_amount" value="" />
+                    {showOtpField ? (
                       <AdmissionField
-                        label="Referred By (Employee ID)"
-                        name="referred_employee_id"
-                        required
-                        placeholder="Referred By (Employee ID) - ex. HYDxxxxx"
-                      />
-                      <input type="hidden" name="incentive_amount" value="" />
-                      {showOtpField ? (
-                        <AdmissionField
-                          label="OTP"
+                        label="OTP"
                         name="referred_mobile_otp"
                         required
                         placeholder="Enter OTP"
@@ -1310,12 +1316,6 @@ function AdmissionsPage({ page }) {
                     ) : null}
                   </>
                 ) : null}
-                <AdmissionField
-                  label="Father/Guardian Occupation"
-                  name="father_occupation"
-                  required
-                  placeholder="Enter Father/Guardian Occupation"
-                />
               </AdmissionFormSection>
 
               <AdmissionFormSection title="ADDRESS DETAILS">
