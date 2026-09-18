@@ -178,7 +178,8 @@ function AdmissionField({
   digitsOnly = false,
 }) {
   const labelText = visualRequired ? `${label}*` : label;
-  const controlledProps = value !== undefined ? { value } : { defaultValue: defaultValue ?? "" };
+  const controlledProps =
+    value !== undefined ? { value } : { defaultValue: defaultValue ?? "" };
   const inputValueProps = value !== undefined ? { value } : { defaultValue };
 
   return (
@@ -204,7 +205,12 @@ function AdmissionField({
           })}
         </div>
       ) : options ? (
-        <select name={name} required={required} onChange={onChange} {...controlledProps}>
+        <select
+          name={name}
+          required={required}
+          onChange={onChange}
+          {...controlledProps}
+        >
           {placeholder ? (
             <option value="" disabled>
               {placeholder}
@@ -224,9 +230,16 @@ function AdmissionField({
           required={required}
           readOnly={readOnly}
           onChange={onChange}
-          onInput={digitsOnly ? (event) => {
-            event.currentTarget.value = event.currentTarget.value.replace(/\D/g, "");
-          } : undefined}
+          onInput={
+            digitsOnly
+              ? (event) => {
+                  event.currentTarget.value = event.currentTarget.value.replace(
+                    /\D/g,
+                    "",
+                  );
+                }
+              : undefined
+          }
           inputMode={inputMode}
           pattern={pattern}
           min={min}
@@ -1080,299 +1093,298 @@ function AdmissionsPage({ page }) {
       <div className={styles.container}>
         <div className={styles.admissionFormOnly}>
           <div className={styles.enquiryPanel}>
-              <form className={styles.admissionForm}>
-                <div className={styles.admissionFormHeader}>
-                  <h2>ONLINE ADMISSION FORM</h2>
-                  <p>Please fill in all the required fields (marked with *)</p>
-                </div>
+            <form className={styles.admissionForm}>
+              <div className={styles.admissionFormHeader}>
+                <h2>ONLINE ADMISSION FORM</h2>
+                <p>Please fill in all the required fields (marked with *)</p>
+              </div>
 
-                <AdmissionFormSection>
-                  <AdmissionField
-                    label="Academic Year"
-                    name="academic_year"
-                    required
-                    placeholder="Select Academic Year*"
-                    options={admissionSelectOptions.academicYear}
-                  />
-                  <AdmissionField
-                    label="Board"
-                    name="board"
-                    required
-                    placeholder="Please Select Board*"
-                    options={admissionSelectOptions.board}
-                  />
-                  <AdmissionField
-                    label="State"
-                    name="state_id"
-                    required
-                    placeholder="Select State*"
-                    options={admissionSelectOptions.state}
-                  />
-                  <AdmissionField
-                    label="City"
-                    name="city_id"
-                    required
-                    placeholder="Select City*"
-                    options={admissionSelectOptions.city}
-                  />
-                  <AdmissionField
-                    label="Branch"
-                    name="branch_id"
-                    required
-                    placeholder="Select Branch*"
-                    options={admissionSelectOptions.branch}
-                  />
-                  <AdmissionField
-                    label="Class"
-                    name="class_id"
-                    required
-                    placeholder="Select Class*"
-                    options={admissionSelectOptions.class}
-                  />
-                  <AdmissionField
-                    label="Orientation"
-                    name="orientation"
-                    required
-                    placeholder="Select Orientation*"
-                    options={admissionSelectOptions.orientation}
-                  />
-                  <AdmissionField
-                    label="Section"
-                    name="section"
-                    required
-                    placeholder="Select Section*"
-                    options={admissionSelectOptions.section}
-                  />
-                  <AdmissionField
-                    label="Student Type"
-                    name="student_type"
-                    required
-                    placeholder="Select Student Type*"
-                    options={admissionSelectOptions.studentType}
-                  />
-                  <AdmissionField
-                    label="Application Score ID"
-                    name="application_score_id"
-                    placeholder="Enter Application Score ID"
-                  />
-                  <AdmissionField
-                    label="First Name"
-                    name="first_name"
-                    required
-                    placeholder="Enter First Name"
-                  />
-                  <AdmissionField
-                    label="Last Name"
-                    name="last_name"
-                    placeholder="Enter Last Name"
-                  />
-                  <AdmissionField
-                    label="Date Of Birth"
-                    name="dob"
-                    required
-                    placeholder="Enter Date Of Birth"
-                  />
-                  <AdmissionField
-                    label="Gender"
-                    name="gender"
-                    required
-                    variant="radio"
-                    options={admissionSelectOptions.gender}
-                  />
-                  <AdmissionField
-                    label="Admission Date"
-                    name="admission_date"
-                    required
-                    placeholder="Enter Admission Date"
-                  />
-                </AdmissionFormSection>
+              <AdmissionFormSection>
+                <AdmissionField
+                  label="Academic Year"
+                  name="academic_year"
+                  required
+                  placeholder="Select Academic Year*"
+                  options={admissionSelectOptions.academicYear}
+                />
+                <AdmissionField
+                  label="Board"
+                  name="board"
+                  required
+                  placeholder="Please Select Board*"
+                  options={admissionSelectOptions.board}
+                />
+                <AdmissionField
+                  label="State"
+                  name="state_id"
+                  required
+                  placeholder="Select State*"
+                  options={admissionSelectOptions.state}
+                />
+                <AdmissionField
+                  label="City"
+                  name="city_id"
+                  required
+                  placeholder="Select City*"
+                  options={admissionSelectOptions.city}
+                />
+                <AdmissionField
+                  label="Branch"
+                  name="branch_id"
+                  required
+                  placeholder="Select Branch*"
+                  options={admissionSelectOptions.branch}
+                />
+                <AdmissionField
+                  label="Class"
+                  name="class_id"
+                  required
+                  placeholder="Select Class*"
+                  options={admissionSelectOptions.class}
+                />
+                <AdmissionField
+                  label="Orientation"
+                  name="orientation"
+                  required
+                  placeholder="Select Orientation*"
+                  options={admissionSelectOptions.orientation}
+                />
+                <AdmissionField
+                  label="Section"
+                  name="section"
+                  required
+                  placeholder="Select Section*"
+                  options={admissionSelectOptions.section}
+                />
+                <AdmissionField
+                  label="Student Type"
+                  name="student_type"
+                  required
+                  placeholder="Select Student Type*"
+                  options={admissionSelectOptions.studentType}
+                />
+                <AdmissionField
+                  label="Application Score ID"
+                  name="application_score_id"
+                  placeholder="Enter Application Score ID"
+                />
+                <AdmissionField
+                  label="First Name"
+                  name="first_name"
+                  required
+                  placeholder="Enter First Name"
+                />
+                <AdmissionField
+                  label="Last Name"
+                  name="last_name"
+                  placeholder="Enter Last Name"
+                />
+                <AdmissionField
+                  label="Date Of Birth"
+                  name="dob"
+                  required
+                  placeholder="Enter Date Of Birth"
+                />
+                <AdmissionField
+                  label="Gender"
+                  name="gender"
+                  required
+                  variant="radio"
+                  options={admissionSelectOptions.gender}
+                />
+                <AdmissionField
+                  label="Admission Date"
+                  name="admission_date"
+                  required
+                  placeholder="Enter Admission Date"
+                />
+              </AdmissionFormSection>
 
-                <AdmissionFormSection title="FEE DETAILS">
-                  <AdmissionField
-                    label="Application Amount"
-                    name="amount"
-                    visualRequired
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    min="0"
-                    digitsOnly
-                    placeholder="Enter Application Amount"
-                  />
-                  <AdmissionField
-                    label="Admission Confirmation Amount"
-                    name="admission_amount"
-                    visualRequired
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    min="0"
-                    digitsOnly
-                    placeholder="Enter Admission Confirmation Amount"
-                  />
-                  <AdmissionField
-                    label="Incentive Amount"
-                    name="incentive_amount"
-                    visualRequired
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    min="0"
-                    digitsOnly
-                    placeholder="Enter Incentive Amount"
-                  />
-                </AdmissionFormSection>
+              <AdmissionFormSection title="FEE DETAILS">
+                <AdmissionField
+                  label="Application Amount"
+                  name="amount"
+                  visualRequired
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  min="0"
+                  digitsOnly
+                  placeholder="Enter Application Amount"
+                />
+                <AdmissionField
+                  label="Admission Confirmation Amount"
+                  name="admission_amount"
+                  visualRequired
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  min="0"
+                  digitsOnly
+                  placeholder="Enter Admission Confirmation Amount"
+                />
+                <AdmissionField
+                  label="Incentive Amount"
+                  name="incentive_amount"
+                  visualRequired
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  min="0"
+                  digitsOnly
+                  placeholder="Enter Incentive Amount"
+                />
+              </AdmissionFormSection>
 
-                <AdmissionFormSection title="PERSONAL DETAILS">
-                  <AdmissionField
-                    label="Father Name"
-                    name="father_name"
-                    required
-                    placeholder="Enter Father Name"
-                  />
-                  <AdmissionField
-                    label="Mother Name"
-                    name="mother_name"
-                    required
-                    placeholder="Enter Mother Name"
-                  />
-                  <AdmissionField
-                    label="Parent Mobile No."
-                    name="phone_no"
-                    type="tel"
-                    required
-                    placeholder="Enter Parent Mobile No."
-                  />
-                  <AdmissionField
-                    label="Parent Email"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder="Enter Parent Email"
-                  />
-                  <AdmissionField
-                    label="Aadhaar No"
-                    name="aadhaar_num"
-                    required
-                    placeholder="Enter Aadhaar No"
-                  />
-                  <AdmissionField
-                    label="Quota"
-                    name="quota_id"
-                    required
-                    placeholder="Select Quota*"
-                    options={admissionSelectOptions.quota}
-                  />
-                  <AdmissionField
-                    label="Admission Type"
-                    name="adms_type_id"
-                    required
-                    placeholder="Select Admission Type*"
-                    options={admissionSelectOptions.admissionType}
-                    value={admissionType}
-                    onChange={(event) => {
-                      setAdmissionType(event.target.value);
-                      setReferredMobile("");
-                    }}
-                  />
-                  {showProFields ? (
-                    <>
+              <AdmissionFormSection title="PERSONAL DETAILS">
+                <AdmissionField
+                  label="Father Name"
+                  name="father_name"
+                  required
+                  placeholder="Enter Father Name"
+                />
+                <AdmissionField
+                  label="Mother Name"
+                  name="mother_name"
+                  required
+                  placeholder="Enter Mother Name"
+                />
+                <AdmissionField
+                  label="Parent Mobile No."
+                  name="phone_no"
+                  type="tel"
+                  required
+                  placeholder="Enter Parent Mobile No."
+                />
+                <AdmissionField
+                  label="Parent Email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Enter Parent Email"
+                />
+                <AdmissionField
+                  label="Aadhaar No"
+                  name="aadhaar_num"
+                  required
+                  placeholder="Enter Aadhaar No"
+                />
+                <AdmissionField
+                  label="Quota"
+                  name="quota_id"
+                  required
+                  placeholder="Select Quota*"
+                  options={admissionSelectOptions.quota}
+                />
+                <AdmissionField
+                  label="Admission Type"
+                  name="adms_type_id"
+                  required
+                  placeholder="Select Admission Type*"
+                  options={admissionSelectOptions.admissionType}
+                  value={admissionType}
+                  onChange={(event) => {
+                    setAdmissionType(event.target.value);
+                    setReferredMobile("");
+                  }}
+                />
+                {showProFields ? (
+                  <>
+                    <AdmissionField
+                      label="Referred Mobile"
+                      name="referred_mobile"
+                      type="tel"
+                      required
+                      placeholder="Enter Referred Mobile"
+                      inputMode="numeric"
+                      pattern="[0-9]{10}"
+                      maxLength={10}
+                      value={referredMobile}
+                      onChange={(event) =>
+                        setReferredMobile(
+                          event.target.value.replace(/\D/g, "").slice(0, 10),
+                        )
+                      }
+                    />
+                    <AdmissionField
+                      label="Referred By (Employee ID)"
+                      name="referred_employee_id"
+                      required
+                      placeholder="Referred By (Employee ID) - ex. HYDxxxxx"
+                    />
+                    {showOtpField ? (
                       <AdmissionField
-                        label="Referred Mobile"
-                        name="referred_mobile"
-                        type="tel"
+                        label="OTP"
+                        name="referred_mobile_otp"
                         required
-                        placeholder="Enter Referred Mobile"
-                        inputMode="numeric"
-                        pattern="[0-9]{10}"
-                        maxLength={10}
-                        value={referredMobile}
-                        onChange={(event) => setReferredMobile(event.target.value.replace(/\D/g, "").slice(0, 10))}
+                        placeholder="Enter OTP"
                       />
-                      <AdmissionField
-                        label="Referred By (Employee ID)"
-                        name="referred_employee_id"
-                        required
-                        placeholder="Referred By (Employee ID) - ex. HYDxxxxx"
-                      />
-                      {showOtpField ? (
-                        <AdmissionField
-                          label="OTP"
-                          name="referred_mobile_otp"
-                          required
-                          placeholder="Enter OTP"
-                        />
-                      ) : null}
-                    </>
-                  ) : null}
-                  <AdmissionField
-                    label="Father/Guardian Occupation"
-                    name="father_occupation"
-                    required
-                    placeholder="Enter Father/Guardian Occupation"
-                  />
-                  <AdmissionField
-                    label="Referred By"
-                    name="referred_by"
-                    placeholder="Enter Referred By"
-                  />
-                </AdmissionFormSection>
+                    ) : null}
+                  </>
+                ) : null}
+                <AdmissionField
+                  label="Father/Guardian Occupation"
+                  name="father_occupation"
+                  required
+                  placeholder="Enter Father/Guardian Occupation"
+                />
+              </AdmissionFormSection>
 
-                <AdmissionFormSection title="ADDRESS DETAILS">
-                  <AdmissionField
-                    label="Door No"
-                    name="door_no"
-                    required
-                    placeholder="Enter Door No"
-                  />
-                  <AdmissionField
-                    label="Street"
-                    name="street"
-                    required
-                    placeholder="Enter Street"
-                  />
-                  <AdmissionField
-                    label="Area"
-                    name="area"
-                    required
-                    placeholder="Enter Area"
-                  />
-                  <AdmissionField
-                    label="Pin ID"
-                    name="pin_id"
-                    type="number"
-                    required
-                    placeholder="Enter Pin ID"
-                  />
-                  <AdmissionField
-                    label="District"
-                    name="district_id"
-                    required
-                    placeholder="Select District*"
-                    options={admissionSelectOptions.district}
-                  />
-                  <AdmissionField
-                    label="Mandal"
-                    name="mandal_id"
-                    required
-                    placeholder="Select Mandal*"
-                    options={admissionSelectOptions.mandal}
-                  />
-                  <AdmissionField
-                    label="Landmark"
-                    name="landmark"
-                    placeholder="Enter Landmark"
-                  />
-                  <AdmissionField
-                    label="Address Type"
-                    name="addrs_type"
-                    required
-                    placeholder="Select Address Type*"
-                    options={[{ label: "Permanent", value: "PERM" }]}
-                  />
-                </AdmissionFormSection>
+              <AdmissionFormSection title="ADDRESS DETAILS">
+                <AdmissionField
+                  label="Door No"
+                  name="door_no"
+                  required
+                  placeholder="Enter Door No"
+                />
+                <AdmissionField
+                  label="Street"
+                  name="street"
+                  required
+                  placeholder="Enter Street"
+                />
+                <AdmissionField
+                  label="Area"
+                  name="area"
+                  required
+                  placeholder="Enter Area"
+                />
+                <AdmissionField
+                  label="Pin ID"
+                  name="pin_id"
+                  type="number"
+                  required
+                  placeholder="Enter Pin ID"
+                />
+                <AdmissionField
+                  label="District"
+                  name="district_id"
+                  required
+                  placeholder="Select District*"
+                  options={admissionSelectOptions.district}
+                />
+                <AdmissionField
+                  label="Mandal"
+                  name="mandal_id"
+                  required
+                  placeholder="Select Mandal*"
+                  options={admissionSelectOptions.mandal}
+                />
+                <AdmissionField
+                  label="Landmark"
+                  name="landmark"
+                  placeholder="Enter Landmark"
+                />
+                <AdmissionField
+                  label="Address Type"
+                  name="addrs_type"
+                  required
+                  placeholder="Select Address Type*"
+                  options={[{ label: "Permanent", value: "PERM" }]}
+                />
+              </AdmissionFormSection>
 
-                <button className={styles.admissionSubmitButton} type="submit">
-                  SUBMIT &amp; PAY
-                </button>
-              </form>
+              <button className={styles.admissionSubmitButton} type="submit">
+                SUBMIT &amp; PAY
+              </button>
+            </form>
           </div>
         </div>
       </div>
