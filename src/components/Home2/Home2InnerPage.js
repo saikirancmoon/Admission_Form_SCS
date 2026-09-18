@@ -1153,7 +1153,6 @@ function AdmissionsPage({ page }) {
                   <AdmissionField
                     label="Application Score ID"
                     name="application_score_id"
-                    required
                     placeholder="Enter Application Score ID"
                   />
                   <AdmissionField
