@@ -20,14 +20,15 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-poppins",
 });
 
 export const metadata = {
-  title: "Sri Chaitanya Schools | Premium Digital Experience",
-  description: "India's Most Advanced Educational Institution. Shaping bright futures with academic excellence.",
+  title: "Sri Chaitanya Schools",
+  description:
+    "India's Most Advanced Educational Institution. Shaping bright futures with academic excellence.",
   icons: {
     icon: "/images/favicon.webp",
   },
@@ -35,11 +36,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable} ${plusJakarta.variable} ${poppins.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${outfit.variable} ${plusJakarta.variable} ${poppins.variable}`}
+    >
       <body>
-        <LenisProvider>
-          {children}
-        </LenisProvider>
+        <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
   );
