@@ -1211,27 +1211,17 @@ function AdmissionsPage({ page }) {
                   digitsOnly
                   placeholder="Enter Application Amount"
                 />
-                <AdmissionField
-                  label="Admission Confirmation Amount"
-                  name="admission_amount"
-                  visualRequired
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  min="0"
-                  digitsOnly
-                  placeholder="Enter Admission Confirmation Amount"
-                />
-                <AdmissionField
-                  label="Incentive Amount"
-                  name="incentive_amount"
-                  visualRequired
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  min="0"
-                  digitsOnly
-                  placeholder="Enter Incentive Amount"
-                />
-              </AdmissionFormSection>
+                  <AdmissionField
+                    label="Admission Confirmation Amount"
+                    name="admission_amount"
+                    visualRequired
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    min="0"
+                    digitsOnly
+                    placeholder="Enter Admission Confirmation Amount"
+                  />
+                </AdmissionFormSection>
 
               <AdmissionFormSection title="PERSONAL DETAILS">
                 <AdmissionField
@@ -1303,15 +1293,16 @@ function AdmissionsPage({ page }) {
                         )
                       }
                     />
-                    <AdmissionField
-                      label="Referred By (Employee ID)"
-                      name="referred_employee_id"
-                      required
-                      placeholder="Referred By (Employee ID) - ex. HYDxxxxx"
-                    />
-                    {showOtpField ? (
                       <AdmissionField
-                        label="OTP"
+                        label="Referred By (Employee ID)"
+                        name="referred_employee_id"
+                        required
+                        placeholder="Referred By (Employee ID) - ex. HYDxxxxx"
+                      />
+                      <input type="hidden" name="incentive_amount" value="" />
+                      {showOtpField ? (
+                        <AdmissionField
+                          label="OTP"
                         name="referred_mobile_otp"
                         required
                         placeholder="Enter OTP"
