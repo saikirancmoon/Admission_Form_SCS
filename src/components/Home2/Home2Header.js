@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { Search, ArrowRight, Menu, X, ChevronRight } from "lucide-react";
+import { Search, ArrowRight, Menu, X } from "lucide-react";
 import styles from "./Home2Header.module.css";
 import Image from "next/image";
 import { home2Routes } from "./home2InnerPagesData";
@@ -12,7 +12,6 @@ import { home2Routes } from "./home2InnerPagesData";
 export default function Home2Header() {
   const headerRef = useRef(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
 
   useGSAP(() => {
     gsap.from(headerRef.current, {
@@ -24,7 +23,7 @@ export default function Home2Header() {
   }, { scope: headerRef });
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-  const toggleDropdown = (menu) => setActiveDropdown(activeDropdown === menu ? null : menu);
+  const closeSidebar = () => setIsSidebarOpen(false);
 
   return (
     <>
@@ -58,9 +57,9 @@ export default function Home2Header() {
             <button className={styles.searchBtn}>
               <Search size={18} />
             </button>
-            <button className={styles.ctaBtn}>
+            <Link href="/home2/admissions" className={styles.ctaBtn}>
               Enquire Now <ArrowRight size={16} />
-            </button>
+            </Link>
           </div>
         </div>
       </header>
@@ -81,47 +80,26 @@ export default function Home2Header() {
         </div>
 
         <div className={styles.sidebarNav}>
-          <Link href="/home2/admissions" className={styles.sidebarLink}>Home</Link>
-          
-          <div className={styles.dropdownGroup}>
-            <button className={styles.sidebarLink} onClick={() => toggleDropdown('about')}>
-              About Us <ChevronRight size={18} className={activeDropdown === 'about' ? styles.rotate : ""} />
-            </button>
-            <div className={`${styles.dropdownContent} ${activeDropdown === 'about' ? styles.show : ""}`}>
-              <Link href="/home2/admissions">Our Legacy</Link>
-              <Link href="/home2/admissions">Leadership</Link>
-              <Link href="/home2/admissions">Vision & Mission</Link>
-            </div>
-          </div>
-
-          <div className={styles.dropdownGroup}>
-            <button className={styles.sidebarLink} onClick={() => toggleDropdown('academics')}>
-              Academics <ChevronRight size={18} className={activeDropdown === 'academics' ? styles.rotate : ""} />
-            </button>
-            <div className={`${styles.dropdownContent} ${activeDropdown === 'academics' ? styles.show : ""}`}>
-              <Link href="/home2/admissions">Curriculum</Link>
-              <Link href="/home2/admissions">Co-Curricular</Link>
-            </div>
-          </div>
-
-          <div className={styles.dropdownGroup}>
-            <button className={styles.sidebarLink} onClick={() => toggleDropdown('facilities')}>
-              Facilities <ChevronRight size={18} className={activeDropdown === 'facilities' ? styles.rotate : ""} />
-            </button>
-            <div className={`${styles.dropdownContent} ${activeDropdown === 'facilities' ? styles.show : ""}`}>
-              <Link href="/home2/admissions">Labs & Library</Link>
-              <Link href="/home2/admissions">Sports Complex</Link>
-              <Link href="/home2/admissions">Transport</Link>
-            </div>
-          </div>
-
-          <Link href="/home2/admissions" className={styles.sidebarLink}>Admissions</Link>
-          <Link href="/home2/admissions" className={styles.sidebarLink}>Gallery</Link>
-          <Link href="/home2/admissions" className={styles.sidebarLink}>Contact Us</Link>
+          {home2Routes.map((route) => (
+            <Link
+              key={route.href}
+              href={route.href}
+              className={styles.sidebarLink}
+              onClick={closeSidebar}
+            >
+              {route.label}
+            </Link>
+          ))}
         </div>
 
         <div className={styles.sidebarFooter}>
-          <button className={styles.sidebarCtaBtn}>Apply Now</button>
+          <Link
+            href="/home2/admissions"
+            className={styles.sidebarCtaBtn}
+            onClick={closeSidebar}
+          >
+            Apply Now
+          </Link>
         </div>
       </div>
     </>

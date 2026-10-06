@@ -1,6 +1,5 @@
-import Home2InnerPage from "../components/Home2/Home2InnerPage";
-import "./home2/home2.css";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <Home2InnerPage slug="admissions" />;
+  redirect("/home2");
 }

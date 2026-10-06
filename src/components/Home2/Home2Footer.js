@@ -70,21 +70,21 @@ export default function Home2Footer() {
           {/* Academics */}
           <div className={styles.linkCol}>
             <h4 className={styles.colTitle}>Academics</h4>
-            <Link href="/home2/admissions" className={styles.link}>Curriculum</Link>
-            <Link href="/home2/admissions" className={styles.link}>Academic Excellence</Link>
-            <Link href="/home2/admissions" className={styles.link}>Co-Curricular</Link>
-            <Link href="/home2/admissions" className={styles.link}>Clubs & Activities</Link>
-            <Link href="/home2/admissions" className={styles.link}>Student Support</Link>
+            <Link href="/home2/academics" className={styles.link}>Curriculum</Link>
+            <Link href="/home2/academics" className={styles.link}>Academic Excellence</Link>
+            <Link href="/home2/academics" className={styles.link}>Co-Curricular</Link>
+            <Link href="/home2/academics" className={styles.link}>Clubs & Activities</Link>
+            <Link href="/home2/academics" className={styles.link}>Student Support</Link>
           </div>
 
           {/* Facilities */}
           <div className={styles.linkCol}>
             <h4 className={styles.colTitle}>Facilities</h4>
-            <Link href="/home2/admissions" className={styles.link}>Infrastructure</Link>
-            <Link href="/home2/admissions" className={styles.link}>Sports</Link>
-            <Link href="/home2/admissions" className={styles.link}>Transport</Link>
-            <Link href="/home2/admissions" className={styles.link}>Hostel</Link>
-            <Link href="/home2/admissions" className={styles.link}>Safety & Security</Link>
+            <Link href="/home2/facilities" className={styles.link}>Infrastructure</Link>
+            <Link href="/home2/facilities" className={styles.link}>Sports</Link>
+            <Link href="/home2/facilities" className={styles.link}>Transport</Link>
+            <Link href="/home2/facilities" className={styles.link}>Hostel</Link>
+            <Link href="/home2/facilities" className={styles.link}>Safety & Security</Link>
           </div>
 
           {/* Contact */}
@@ -112,11 +112,11 @@ export default function Home2Footer() {
         <div className={styles.bottomBar}>
           <p>© 2024 Sri Chaitanya School. All Rights Reserved.</p>
           <div className={styles.legalLinks}>
-            <Link href="/home2/admissions">Privacy Policy</Link>
+            <Link href="/home2">Privacy Policy</Link>
             <span>|</span>
-            <Link href="/home2/admissions">Terms of Use</Link>
+            <Link href="/home2">Terms of Use</Link>
             <span>|</span>
-            <Link href="/home2/admissions">Sitemap</Link>
+            <Link href="/home2">Sitemap</Link>
           </div>
         </div>
 

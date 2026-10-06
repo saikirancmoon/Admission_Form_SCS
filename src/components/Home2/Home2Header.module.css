@@ -103,6 +103,7 @@
   background: var(--h2-primary);
   color: white;
   border: none;
+  text-decoration: none;
   padding: 0.75rem 1.5rem;
   border-radius: 99px;
   font-family: var(--font-sans);
@@ -126,7 +127,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
@@ -256,12 +257,15 @@
 }
 
 .sidebarCtaBtn {
+  display: block;
   width: 100%;
   padding: 1rem;
   border-radius: 100px;
   background: var(--color-primary);
   color: white;
   border: none;
+  text-align: center;
+  text-decoration: none;
   font-weight: 700;
   font-size: 1rem;
   box-shadow: 0 10px 20px rgba(24, 76, 216, 0.2);

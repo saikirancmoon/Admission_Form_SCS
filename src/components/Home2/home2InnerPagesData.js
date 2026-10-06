@@ -24,13 +24,22 @@ import {
 } from "lucide-react";
 
 export const home2Routes = [
-  { label: "Home", href: "/home2/admissions" },
-  { label: "About Us", href: "/home2/admissions" },
-  { label: "Academics", href: "/home2/admissions" },
-  { label: "Facilities", href: "/home2/admissions" },
+  { label: "Home", href: "/home2" },
+  { label: "About Us", href: "/home2/about" },
+  { label: "Academics", href: "/home2/academics" },
+  { label: "Facilities", href: "/home2/facilities" },
   { label: "Admissions", href: "/home2/admissions" },
-  { label: "Gallery", href: "/home2/admissions" },
-  { label: "Contact Us", href: "/home2/admissions" },
+  { label: "Gallery", href: "/home2/gallery" },
+  { label: "Contact Us", href: "/home2/contact" },
+];
+
+export const home2InnerPageSlugs = [
+  "about",
+  "academics",
+  "facilities",
+  "admissions",
+  "gallery",
+  "contact",
 ];
 
 export const home2InnerPages = {

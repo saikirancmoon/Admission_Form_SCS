@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -12,11 +12,13 @@ import {
   BookOpen,
   Brain,
   Bus,
+  CheckCircle2,
   Clock,
   Compass,
   FlaskConical,
   GraduationCap,
   Home,
+  Info,
   Mail,
   MapPin,
   Phone,
@@ -29,6 +31,7 @@ import { home2InnerPages } from "./home2InnerPagesData";
 import managementImage from "../../imgs/about/management.jpg";
 import missionImage from "../../imgs/about/mission.jpg";
 import journeyImage from "../../imgs/about/our_journey.jpg";
+import razorpayImage from "../../imgs/about/razorpay.png";
 import visionImage from "../../imgs/about/vision.jpg";
 import whoWeAreImage from "../../imgs/about/who_we_are.jpg";
 
@@ -72,10 +75,6 @@ function Hero({ page, variant = "split" }) {
           animate="visible"
           transition={{ staggerChildren: 0.13 }}
         >
-          <motion.span className={styles.eyebrow} variants={fadeUp}>
-            <Sparkles size={16} />
-            {page.eyebrow}
-          </motion.span>
           <motion.h1 className={styles.title} variants={fadeUp}>
             <HighlightTitle page={page} />
           </motion.h1>
@@ -167,16 +166,23 @@ function AdmissionField({
   visualRequired = required,
   defaultValue,
   readOnly = false,
+  disabled = false,
   options,
   value,
   onChange,
+  onBlur,
   inputMode,
   pattern,
   min,
+  step,
   maxLength,
   variant,
   digitsOnly = false,
+  verified = false,
+  helpText,
+  endAction,
 }) {
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const labelText = visualRequired ? `${label}*` : label;
   const controlledProps =
     value !== undefined ? { value } : { defaultValue: defaultValue ?? "" };
@@ -184,7 +190,26 @@ function AdmissionField({
 
   return (
     <label className={styles.admissionFormField}>
-      <span>{labelText}</span>
+      <span className={styles.fieldLabel}>
+        {labelText}
+        {helpText ? (
+          <button
+            className={styles.fieldInfoButton}
+            type="button"
+            onClick={(event) => {
+              event.preventDefault();
+              setIsHelpOpen((current) => !current);
+            }}
+            aria-label={`Show help for ${label}`}
+            aria-expanded={isHelpOpen}
+          >
+            <Info size={14} />
+          </button>
+        ) : null}
+      </span>
+      {isHelpOpen ? (
+        <span className={styles.fieldHelpText}>{helpText}</span>
+      ) : null}
       {variant === "radio" ? (
         <div className={styles.admissionRadioGroup}>
           {options.map((option) => {
@@ -209,6 +234,7 @@ function AdmissionField({
           name={name}
           required={required}
           onChange={onChange}
+          disabled={disabled}
           {...controlledProps}
         >
           {placeholder ? (
@@ -223,42 +249,170 @@ function AdmissionField({
           ))}
         </select>
       ) : (
-        <input
-          name={name}
-          type={type}
-          placeholder={placeholder}
-          required={required}
-          readOnly={readOnly}
-          onChange={onChange}
-          onInput={
-            digitsOnly
-              ? (event) => {
-                  event.currentTarget.value = event.currentTarget.value.replace(
-                    /\D/g,
-                    "",
-                  );
-                }
-              : undefined
-          }
-          inputMode={inputMode}
-          pattern={pattern}
-          min={min}
-          maxLength={maxLength}
-          {...inputValueProps}
-        />
+        <div className={styles.inputShell}>
+          <input
+            name={name}
+            type={type}
+            placeholder={placeholder}
+            required={required}
+            readOnly={readOnly}
+            disabled={disabled}
+            onChange={onChange}
+            onBlur={onBlur}
+            onInput={
+              digitsOnly
+                ? (event) => {
+                    event.currentTarget.value =
+                      event.currentTarget.value.replace(/\D/g, "");
+                  }
+                : undefined
+            }
+            inputMode={inputMode}
+            pattern={pattern}
+            min={min}
+            step={step}
+            maxLength={maxLength}
+            {...inputValueProps}
+          />
+          {verified ? (
+            <CheckCircle2
+              aria-label="Verified"
+              className={styles.verifiedIcon}
+              size={20}
+            />
+          ) : null}
+          {endAction ? (
+            <button
+              className={styles.inputEndAction}
+              type="button"
+              onClick={endAction.onClick}
+            >
+              {endAction.label}
+            </button>
+          ) : null}
+        </div>
       )}
     </label>
   );
 }
 
-function AdmissionFormSection({ title, children }) {
+function AdmissionFormSection({ title, children, active = true, stepIndex }) {
   return (
-    <fieldset className={styles.admissionFormSection}>
+    <fieldset
+      className={`${styles.admissionFormSection} ${
+        active
+          ? styles.admissionFormSectionActive
+          : styles.admissionFormSectionHidden
+      }`}
+      data-step-index={stepIndex}
+    >
       {title ? <legend>{title}</legend> : null}
       <div className={styles.admissionFormGrid}>{children}</div>
     </fieldset>
   );
 }
+
+function normalizeAmountInput(value) {
+  const cleanedValue = value.replace(/[^\d.]/g, "");
+  const [wholePart, ...decimalParts] = cleanedValue.split(".");
+  const decimalPart = decimalParts.join("").slice(0, 2);
+
+  return decimalParts.length ? `${wholePart}.${decimalPart}` : wholePart;
+}
+
+function getTodayDateInputValue() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function getSelectedOptionLabel(options, value) {
+  return (
+    options.find((option) => String(option.value ?? option) === String(value))
+      ?.label ?? value
+  );
+}
+
+function formatDateForAdmissionApi(value) {
+  if (!value) {
+    return "";
+  }
+
+  const [year, month, day] = value.split("-");
+
+  if (!year || !month || !day) {
+    return value;
+  }
+
+  return `${Number(day)}-${Number(month)}-${year}`;
+}
+
+function parseAmountValue(value) {
+  const parsedValue = Number.parseFloat(value);
+
+  return Number.isFinite(parsedValue) ? parsedValue : 0;
+}
+
+function formatAmountValue(value) {
+  return parseAmountValue(value).toFixed(2);
+}
+
+function formatIndianCurrency(value) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(parseAmountValue(value));
+}
+
+const admissionFieldHelp = {
+  orientation:
+    "The learning programme or course track available for the selected branch, class, and academic year.",
+  applicationScoreId:
+    "An optional score or application reference ID, used only when the student already has one.",
+  section:
+    "The classroom section allotted under the selected class and orientation.",
+  studentType:
+    "The student category, such as day scholar or another campus-supported student type.",
+  quota:
+    "The admission category used for eligibility, fee rules, or internal classification.",
+  admissionType:
+    "Choose Direct Walkin for a regular enquiry, or PRO when the admission is referred by a PRO employee.",
+  referredEmployee:
+    "The PRO employee payroll ID. A verified ID unlocks mobile matching for OTP validation.",
+};
+
+const admissionSteps = [
+  {
+    title: "Academic Details",
+    heading: "Admission Form",
+    description: "Select the campus and programme for admission.",
+  },
+  {
+    title: "Student Details",
+    heading: "Student Details",
+    description: "Enter the applicant profile, dates, and fee details.",
+  },
+  {
+    title: "Parent Details",
+    heading: "Parent Details",
+    description: "Add parent contact, occupation, quota, and referral details.",
+  },
+  {
+    title: "Address Details",
+    heading: "Address Details",
+    description: "Complete the student address information.",
+  },
+  {
+    title: "Review & Pay",
+    heading: "Review & Pay",
+    description: "Confirm payment details and choose the gateway.",
+  },
+];
 
 const admissionSelectOptions = {
   board: [{ label: "Board 1", value: 1 }],
@@ -282,6 +436,105 @@ const admissionSelectOptions = {
   district: [{ label: "District 3", value: 3 }],
   mandal: [{ label: "Mandal 7", value: 7 }],
 };
+
+const optionReaders = {
+  city: { label: ["cityName", "name"], value: ["cityId", "id"] },
+  default: { label: ["name", "label"], value: ["id", "value"] },
+};
+
+function readFirst(item, keys) {
+  return keys
+    .map((key) => item?.[key])
+    .find((value) => value !== undefined && value !== null);
+}
+
+function normalizeApiOptions(payload, type = "default") {
+  const rows = Array.isArray(payload) ? payload : payload?.data;
+  const readers = optionReaders[type] || optionReaders.default;
+
+  if (!Array.isArray(rows)) {
+    return [];
+  }
+
+  return rows
+    .map((item) => {
+      const label = readFirst(item, readers.label);
+      const value = readFirst(item, readers.value);
+
+      if (label === undefined || value === undefined) {
+        return null;
+      }
+
+      return { label: String(label).trim(), value: String(value) };
+    })
+    .filter(Boolean);
+}
+
+async function fetchSchoolOptions(endpoint, params = {}, type = "default") {
+  const searchParams = new URLSearchParams({ endpoint });
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, value);
+    }
+  });
+
+  const response = await fetch(`/api/school?${searchParams.toString()}`);
+  const payload = await parseSchoolResponse(response, endpoint);
+
+  if (!response.ok) {
+    throw new Error(payload?.message || `Failed to load ${endpoint}`);
+  }
+
+  return normalizeApiOptions(payload, type);
+}
+
+async function fetchSchoolData(endpoint, params = {}) {
+  const searchParams = new URLSearchParams({ endpoint });
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, value);
+    }
+  });
+
+  const response = await fetch(`/api/school?${searchParams.toString()}`);
+  const payload = await parseSchoolResponse(response, endpoint);
+
+  if (!response.ok) {
+    throw new Error(payload?.message || `Failed to load ${endpoint}`);
+  }
+
+  return payload;
+}
+
+async function postSchoolData(endpoint, payload) {
+  const searchParams = new URLSearchParams({ endpoint });
+  const response = await fetch(`/api/school?${searchParams.toString()}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const result = await parseSchoolResponse(response, endpoint);
+
+  if (!response.ok) {
+    throw new Error(result?.message || `Failed to submit ${endpoint}`);
+  }
+
+  return result;
+}
+
+async function parseSchoolResponse(response, endpoint) {
+  const text = await response.text();
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(
+      `The ${endpoint} API returned an invalid response. Please check the API service.`,
+    );
+  }
+}
 
 function AboutPage() {
   const aboutNav = [
@@ -333,10 +586,6 @@ function AboutPage() {
             animate="visible"
             transition={{ staggerChildren: 0.12 }}
           >
-            <motion.span className={styles.eyebrow} variants={fadeUp}>
-              <Sparkles size={16} />
-              About Sri Chaitanya
-            </motion.span>
             <motion.h1 className={styles.title} variants={fadeUp}>
               ABOUT <span>US</span>
             </motion.h1>
@@ -610,10 +859,6 @@ function AcademicsPage() {
             animate="visible"
             transition={{ staggerChildren: 0.12 }}
           >
-            <motion.span className={styles.eyebrow} variants={fadeUp}>
-              <GraduationCap size={16} />
-              Academics
-            </motion.span>
             <motion.h1 className={styles.title} variants={fadeUp}>
               LEARNING FOR <span>EVERY STAGE</span>
             </motion.h1>
@@ -965,10 +1210,6 @@ function FacilitiesPage({ page }) {
               animate="visible"
               transition={{ staggerChildren: 0.12 }}
             >
-              <motion.span className={styles.eyebrow} variants={fadeUp}>
-                <Sparkles size={16} />
-                World Class Facilities
-              </motion.span>
               <motion.h1 variants={fadeUp}>
                 SPACES BUILT FOR <span>COMFORT</span> AND GROWTH
               </motion.h1>
@@ -1082,304 +1323,1306 @@ function FacilitiesPage({ page }) {
 }
 
 function AdmissionsPage({ page }) {
-  const [admissionType, setAdmissionType] = useState("");
+  const formRef = useRef(null);
+  const stepperRef = useRef(null);
+  const stepButtonRefs = useRef([]);
+  const [formValues, setFormValues] = useState({
+    academic_year: "",
+    board: "",
+    state_id: "",
+    city_id: "",
+    branch_id: "",
+    class_id: "",
+    orientation: "",
+    section: "",
+    student_type: "",
+    amount: "",
+    admission_amount: "",
+    admission_date: "",
+    quota_id: "",
+    adms_type_id: "",
+    father_occupation: "",
+    district_id: "",
+    mandal_id: "",
+  });
+  const [dropdownOptions, setDropdownOptions] = useState({
+    academicYears: [],
+    states: [],
+    cities: [],
+    campuses: [],
+    boards: [],
+    classes: [],
+    orientations: [],
+    sections: [],
+    studentTypes: [],
+    quotas: [],
+    admissionTypes: admissionSelectOptions.admissionType,
+    occupations: [],
+    districts: [],
+    mandals: [],
+  });
+  const [loadingFields, setLoadingFields] = useState({});
+  const [apiError, setApiError] = useState("");
+  const [referredEmployeeId, setReferredEmployeeId] = useState("");
   const [referredMobile, setReferredMobile] = useState("");
+  const [proMobileNumbers, setProMobileNumbers] = useState([]);
+  const [proValidationMessage, setProValidationMessage] = useState("");
+  const [admissionPayload, setAdmissionPayload] = useState(null);
+  const [paymentGateway, setPaymentGateway] = useState("Razorpay");
+  const [submissionStatus, setSubmissionStatus] = useState({
+    type: "",
+    message: "",
+  });
+  const [isSubmittingAdmission, setIsSubmittingAdmission] = useState(false);
+  const [activeAdmissionStep, setActiveAdmissionStep] = useState(0);
   const referredMobileDigits = referredMobile.replace(/\D/g, "");
-  const showProFields = admissionType === "pro";
-  const showOtpField = showProFields && referredMobileDigits.length === 10;
+  const selectedAdmissionType = dropdownOptions.admissionTypes.find(
+    (option) => option.value === formValues.adms_type_id,
+  );
+  const showProFields =
+    formValues.adms_type_id === "pro" ||
+    selectedAdmissionType?.label.toLowerCase().includes("pro");
+  const mobileMatchesProEmployee =
+    referredMobileDigits.length >= 10 &&
+    proMobileNumbers.some((mobileNumber) => {
+      const normalizedMobile = mobileNumber.replace(/\D/g, "");
+
+      return normalizedMobile === referredMobileDigits;
+    });
+  const showOtpField = showProFields && mobileMatchesProEmployee;
+  const selectedAcademicYearLabel = getSelectedOptionLabel(
+    dropdownOptions.academicYears,
+    formValues.academic_year,
+  );
+  const selectedQuotaLabel = getSelectedOptionLabel(
+    dropdownOptions.quotas,
+    formValues.quota_id,
+  );
+  const selectedAdmissionTypeLabel = getSelectedOptionLabel(
+    dropdownOptions.admissionTypes,
+    formValues.adms_type_id,
+  );
+  const applicationAmount = parseAmountValue(formValues.amount);
+  const admissionConfirmationAmount = parseAmountValue(
+    formValues.admission_amount,
+  );
+  const paymentAmountValue = applicationAmount + admissionConfirmationAmount;
+  const paymentAmount = formatAmountValue(paymentAmountValue);
+  const paymentAmountDisplay = formatIndianCurrency(paymentAmountValue);
+
+  useEffect(() => {
+    const stepper = stepperRef.current;
+    const activeStep = stepButtonRefs.current[activeAdmissionStep];
+
+    if (!stepper || !activeStep || stepper.scrollWidth <= stepper.clientWidth) {
+      return;
+    }
+
+    const nextLeft =
+      activeStep.offsetLeft - stepper.clientWidth / 2 + activeStep.clientWidth / 2;
+
+    stepper.scrollTo({
+      left: Math.max(nextLeft, 0),
+      behavior: "smooth",
+    });
+  }, [activeAdmissionStep]);
+
+  const updateOptions = (key, options) => {
+    setDropdownOptions((current) => ({ ...current, [key]: options }));
+  };
+
+  const clearOptions = (keys) => {
+    setDropdownOptions((current) => {
+      const nextOptions = { ...current };
+
+      keys.forEach((key) => {
+        nextOptions[key] = [];
+      });
+
+      return nextOptions;
+    });
+  };
+
+  const updateField = (name, value) => {
+    setFormValues((current) => ({ ...current, [name]: value }));
+  };
+
+  const updateFields = (values) => {
+    setFormValues((current) => ({ ...current, ...values }));
+  };
+
+  const loadOptions = async (key, endpoint, params = {}, type = "default") => {
+    try {
+      updateOptions(key, await fetchSchoolOptions(endpoint, params, type));
+    } catch (error) {
+      updateOptions(key, []);
+      setApiError(error.message);
+    }
+  };
+
+  const handleAcademicYearChange = (value) => {
+    updateFields({
+      academic_year: value,
+      branch_id: "",
+      board: "",
+      class_id: "",
+      orientation: "",
+      section: "",
+      student_type: "",
+      amount: "",
+      admission_amount: "",
+    });
+    clearOptions([
+      "campuses",
+      "boards",
+      "classes",
+      "orientations",
+      "sections",
+      "studentTypes",
+    ]);
+  };
+
+  const handleStateChange = (value) => {
+    updateFields({
+      state_id: value,
+      city_id: "",
+      branch_id: "",
+      board: "",
+      class_id: "",
+      orientation: "",
+      section: "",
+      student_type: "",
+      amount: "",
+      admission_amount: "",
+      district_id: "",
+      mandal_id: "",
+    });
+    clearOptions([
+      "cities",
+      "campuses",
+      "boards",
+      "classes",
+      "orientations",
+      "sections",
+      "studentTypes",
+      "districts",
+      "mandals",
+    ]);
+  };
+
+  const handleCityChange = (value) => {
+    updateFields({
+      city_id: value,
+      branch_id: "",
+      board: "",
+      class_id: "",
+      orientation: "",
+      section: "",
+      student_type: "",
+      amount: "",
+      admission_amount: "",
+    });
+    clearOptions([
+      "campuses",
+      "boards",
+      "classes",
+      "orientations",
+      "sections",
+      "studentTypes",
+    ]);
+  };
+
+  const handleBranchChange = (value) => {
+    updateFields({
+      branch_id: value,
+      board: "",
+      class_id: "",
+      orientation: "",
+      section: "",
+      student_type: "",
+      amount: "",
+      admission_amount: "",
+    });
+    clearOptions([
+      "boards",
+      "classes",
+      "orientations",
+      "sections",
+      "studentTypes",
+    ]);
+  };
+
+  const handleBoardChange = (value) => {
+    updateFields({
+      board: value,
+      class_id: "",
+      orientation: "",
+      section: "",
+      student_type: "",
+      amount: "",
+      admission_amount: "",
+    });
+    clearOptions(["classes", "orientations", "sections", "studentTypes"]);
+  };
+
+  const handleClassChange = (value) => {
+    updateFields({
+      class_id: value,
+      orientation: "",
+      section: "",
+      student_type: "",
+      amount: "",
+      admission_amount: "",
+    });
+    clearOptions(["orientations", "sections", "studentTypes"]);
+  };
+
+  const handleOrientationChange = (value) => {
+    updateFields({
+      orientation: value,
+      section: "",
+      student_type: "",
+      amount: "",
+      admission_amount: "",
+    });
+    clearOptions(["sections", "studentTypes"]);
+  };
+
+  const handleStudentTypeChange = (value) => {
+    updateFields({
+      student_type: value,
+      amount: "",
+      admission_amount: "",
+    });
+  };
+
+  const handleDistrictChange = (value) => {
+    updateFields({
+      district_id: value,
+      mandal_id: "",
+    });
+    clearOptions(["mandals"]);
+  };
+
+  const validateProEmployee = async (payrollIdValue = referredEmployeeId) => {
+    const payrollId = payrollIdValue.trim();
+
+    setProMobileNumbers([]);
+    setProValidationMessage("");
+
+    if (!payrollId) {
+      return;
+    }
+
+    try {
+      const response = await fetchSchoolData("proEmployee", { payrollId });
+      const proData = response?.data || {};
+      const mobileNumbers = [proData.primaryMobileNo, proData.secondaryMobileNo]
+        .filter(Boolean)
+        .map((number) => String(number));
+
+      if (response?.success && mobileNumbers.length) {
+        setProMobileNumbers(mobileNumbers);
+        setProValidationMessage(
+          "PRO employee verified. Enter the registered mobile number.",
+        );
+      } else {
+        setProValidationMessage(
+          response?.message || "Could not verify PRO employee.",
+        );
+      }
+    } catch (error) {
+      setProValidationMessage(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (!showProFields) {
+      return;
+    }
+
+    const payrollId = referredEmployeeId.trim();
+
+    setProMobileNumbers([]);
+    setProValidationMessage("");
+
+    if (!payrollId) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      validateProEmployee(payrollId);
+    }, 600);
+
+    return () => clearTimeout(timeoutId);
+  }, [referredEmployeeId, showProFields]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadInitialOptions() {
+      setLoadingFields((current) => ({
+        ...current,
+        academicYears: true,
+        states: true,
+        quotas: true,
+        admissionTypes: true,
+        occupations: true,
+      }));
+
+      try {
+        const [academicYears, states, quotas, admissionTypes, occupations] =
+          await Promise.all([
+            fetchSchoolOptions("academicYears"),
+            fetchSchoolOptions("states"),
+            fetchSchoolOptions("quotas"),
+            fetchSchoolOptions("admissionTypes"),
+            fetchSchoolOptions("occupations"),
+          ]);
+
+        if (!active) {
+          return;
+        }
+
+        setDropdownOptions((current) => ({
+          ...current,
+          academicYears,
+          states,
+          quotas,
+          admissionTypes: admissionTypes.length
+            ? admissionTypes
+            : current.admissionTypes,
+          occupations,
+        }));
+      } catch (error) {
+        if (active) {
+          setApiError(error.message);
+        }
+      } finally {
+        if (active) {
+          setLoadingFields((current) => ({
+            ...current,
+            academicYears: false,
+            states: false,
+            quotas: false,
+            admissionTypes: false,
+            occupations: false,
+          }));
+        }
+      }
+    }
+
+    loadInitialOptions();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (formValues.state_id) {
+      Promise.resolve().then(() => {
+        loadOptions(
+          "cities",
+          "cities",
+          { stateId: formValues.state_id },
+          "city",
+        );
+        loadOptions("districts", "districts", { stateId: formValues.state_id });
+      });
+    }
+  }, [formValues.state_id]);
+
+  useEffect(() => {
+    if (formValues.city_id && formValues.academic_year) {
+      Promise.resolve().then(() => {
+        loadOptions("campuses", "campuses", {
+          cityId: formValues.city_id,
+          academicYearId: formValues.academic_year,
+        });
+      });
+    }
+  }, [formValues.city_id, formValues.academic_year]);
+
+  useEffect(() => {
+    if (formValues.branch_id && formValues.academic_year) {
+      Promise.resolve().then(() => {
+        loadOptions("boards", "boards", {
+          campusId: formValues.branch_id,
+          academicYearId: formValues.academic_year,
+        });
+      });
+    }
+  }, [formValues.branch_id, formValues.academic_year]);
+
+  useEffect(() => {
+    if (formValues.branch_id && formValues.board && formValues.academic_year) {
+      Promise.resolve().then(() => {
+        loadOptions("classes", "classes", {
+          campusId: formValues.branch_id,
+          boardId: formValues.board,
+          academicYearId: formValues.academic_year,
+        });
+      });
+    }
+  }, [formValues.board]);
+
+  useEffect(() => {
+    if (
+      formValues.branch_id &&
+      formValues.academic_year &&
+      formValues.class_id
+    ) {
+      Promise.resolve().then(() => {
+        loadOptions("orientations", "orientations", {
+          campusId: formValues.branch_id,
+          academicYearId: formValues.academic_year,
+          classId: formValues.class_id,
+        });
+      });
+    }
+  }, [formValues.class_id]);
+
+  useEffect(() => {
+    if (formValues.orientation) {
+      Promise.resolve().then(() => {
+        if (formValues.class_id) {
+          loadOptions("sections", "sections", {
+            classId: formValues.class_id,
+            orientationId: formValues.orientation,
+          });
+        }
+
+        if (formValues.branch_id && formValues.academic_year) {
+          loadOptions("studentTypes", "studentTypes", {
+            campusId: formValues.branch_id,
+            orientationId: formValues.orientation,
+            academicYearId: formValues.academic_year,
+          });
+        }
+      });
+    }
+  }, [formValues.orientation]);
+
+  useEffect(() => {
+    if (formValues.district_id) {
+      Promise.resolve().then(() => {
+        loadOptions("mandals", "mandals", {
+          districtId: formValues.district_id,
+        });
+      });
+    }
+  }, [formValues.district_id]);
+
+  useEffect(() => {
+    if (
+      formValues.academic_year &&
+      formValues.branch_id &&
+      formValues.class_id &&
+      formValues.orientation &&
+      formValues.student_type
+    ) {
+      fetchSchoolData("orientationFees", {
+        academicYearId: formValues.academic_year,
+        branchId: formValues.branch_id,
+        classId: formValues.class_id,
+        orientationId: formValues.orientation,
+        studentType: formValues.student_type,
+      })
+        .then((feeData) => {
+          updateFields({
+            amount: feeData?.appAmount ?? "",
+            admission_amount: feeData?.amount ?? "",
+          });
+        })
+        .catch((error) => setApiError(error.message));
+    }
+  }, [formValues.student_type]);
+
+  const validateAdmissionStep = (stepIndex = activeAdmissionStep) => {
+    const currentSection = formRef.current?.querySelector(
+      `[data-step-index="${stepIndex}"]`,
+    );
+
+    if (!currentSection) {
+      return true;
+    }
+
+    const fields = Array.from(
+      currentSection.querySelectorAll("input, select, textarea"),
+    ).filter((field) => !field.disabled && field.type !== "hidden");
+
+    const invalidField = fields.find((field) => !field.checkValidity());
+
+    if (invalidField) {
+      invalidField.reportValidity();
+      return false;
+    }
+
+    return true;
+  };
+
+  const buildAdmissionPayload = () => {
+    const formData = new FormData(formRef.current);
+    const nextAdmissionPayload = Object.fromEntries(formData.entries());
+
+    return {
+      ...nextAdmissionPayload,
+      ...formValues,
+      dob: formatDateForAdmissionApi(nextAdmissionPayload.dob),
+      admission_date: formatDateForAdmissionApi(formValues.admission_date),
+      quota: selectedQuotaLabel,
+      admission_type: selectedAdmissionTypeLabel,
+      referred_mobile: referredMobile,
+      referred_by: referredEmployeeId || nextAdmissionPayload.referred_by || "",
+      fee_type: "Admission_Fee",
+      payment_amount: paymentAmount,
+      incentive_amount: nextAdmissionPayload.incentive_amount || 0,
+      longitude: nextAdmissionPayload.longitude || 0,
+      latitude: nextAdmissionPayload.latitude || 0,
+      added_ip: nextAdmissionPayload.added_ip || "0.0.0.0",
+      payment_status: nextAdmissionPayload.payment_status || "PENDING",
+      online_transaction_no: nextAdmissionPayload.online_transaction_no || "",
+      online_transaction_type:
+        nextAdmissionPayload.online_transaction_type || "ONLINE",
+      order_id: nextAdmissionPayload.order_id || "",
+    };
+  };
+
+  const goToNextAdmissionStep = () => {
+    if (!validateAdmissionStep()) {
+      return;
+    }
+
+    if (activeAdmissionStep === admissionSteps.length - 2) {
+      setAdmissionPayload(buildAdmissionPayload());
+    }
+
+    setSubmissionStatus({ type: "", message: "" });
+    setActiveAdmissionStep((current) =>
+      Math.min(current + 1, admissionSteps.length - 1),
+    );
+  };
+
+  const goToPreviousAdmissionStep = () => {
+    setSubmissionStatus({ type: "", message: "" });
+    setActiveAdmissionStep((current) => Math.max(current - 1, 0));
+  };
+
+  const handleAdmissionFormSubmit = (event) => {
+    event.preventDefault();
+  };
+
+  const handlePaymentSubmit = async (event) => {
+    event?.preventDefault();
+
+    const payload = admissionPayload || buildAdmissionPayload();
+
+    if (!payload) {
+      setSubmissionStatus({
+        type: "error",
+        message: "Please complete the admission form before selecting payment.",
+      });
+      return;
+    }
+
+    setIsSubmittingAdmission(true);
+    setSubmissionStatus({ type: "", message: "" });
+
+    try {
+      const result = await postSchoolData("saveStudent", {
+        ...payload,
+        payment_gateway_name: paymentGateway,
+        payment_status: payload.payment_status || "PENDING",
+        online_transaction_type: payload.online_transaction_type || "ONLINE",
+      });
+
+      setSubmissionStatus({
+        type: "success",
+        message: result?.message || "Admission details submitted successfully.",
+      });
+    } catch (error) {
+      setSubmissionStatus({
+        type: "error",
+        message: error.message,
+      });
+    } finally {
+      setIsSubmittingAdmission(false);
+    }
+  };
 
   return (
-    <section className={styles.admissionFlow}>
-      <div className={styles.container}>
-        <div className={styles.admissionFormOnly}>
-          <div className={styles.enquiryPanel}>
-            <form className={styles.admissionForm}>
-              <div className={styles.admissionFormHeader}>
-                <h2>ONLINE ADMISSION FORM</h2>
-                <p>Please fill in all the required fields (marked with *)</p>
-              </div>
+    <>
+      <Hero page={page} variant="Admission" />
+      <section className={styles.admissionFlow}>
+        <div className={styles.container}>
+          <div className={styles.admissionFormOnly}>
+            <div className={styles.enquiryPanel}>
+              <form
+                ref={formRef}
+                className={styles.admissionForm}
+                onSubmit={handleAdmissionFormSubmit}
+              >
+                <div
+                  className={styles.stepper}
+                  ref={stepperRef}
+                  aria-label="Admission progress"
+                >
+                  {admissionSteps.map((step, index) => (
+                    <button
+                      ref={(element) => {
+                        stepButtonRefs.current[index] = element;
+                      }}
+                      className={`${styles.stepperItem} ${
+                        activeAdmissionStep === index
+                          ? styles.stepperItemActive
+                          : ""
+                      } ${activeAdmissionStep > index ? styles.stepperItemComplete : ""}`}
+                      type="button"
+                      key={step.title}
+                      onClick={() => {
+                        if (index <= activeAdmissionStep) {
+                          setActiveAdmissionStep(index);
+                          return;
+                        }
 
-              <AdmissionFormSection>
-                <AdmissionField
-                  label="Academic Year"
-                  name="academic_year"
-                  required
-                  placeholder="Select Academic Year*"
-                  options={admissionSelectOptions.academicYear}
-                />
-                <AdmissionField
-                  label="Board"
-                  name="board"
-                  required
-                  placeholder="Please Select Board*"
-                  options={admissionSelectOptions.board}
-                />
-                <AdmissionField
-                  label="State"
-                  name="state_id"
-                  required
-                  placeholder="Select State*"
-                  options={admissionSelectOptions.state}
-                />
-                <AdmissionField
-                  label="City"
-                  name="city_id"
-                  required
-                  placeholder="Select City*"
-                  options={admissionSelectOptions.city}
-                />
-                <AdmissionField
-                  label="Branch"
-                  name="branch_id"
-                  required
-                  placeholder="Select Branch*"
-                  options={admissionSelectOptions.branch}
-                />
-                <AdmissionField
-                  label="Class"
-                  name="class_id"
-                  required
-                  placeholder="Select Class*"
-                  options={admissionSelectOptions.class}
-                />
-                <AdmissionField
-                  label="Orientation"
-                  name="orientation"
-                  required
-                  placeholder="Select Orientation*"
-                  options={admissionSelectOptions.orientation}
-                />
-                <AdmissionField
-                  label="Section"
-                  name="section"
-                  required
-                  placeholder="Select Section*"
-                  options={admissionSelectOptions.section}
-                />
-                <AdmissionField
-                  label="Student Type"
-                  name="student_type"
-                  required
-                  placeholder="Select Student Type*"
-                  options={admissionSelectOptions.studentType}
-                />
-                <AdmissionField
-                  label="Application Score ID"
-                  name="application_score_id"
-                  placeholder="Enter Application Score ID"
-                />
-                <AdmissionField
-                  label="First Name"
-                  name="first_name"
-                  required
-                  placeholder="Enter First Name"
-                />
-                <AdmissionField
-                  label="Last Name"
-                  name="last_name"
-                  placeholder="Enter Last Name"
-                />
-                <AdmissionField
-                  label="Date Of Birth"
-                  name="dob"
-                  required
-                  placeholder="Enter Date Of Birth"
-                />
-                <AdmissionField
-                  label="Gender"
-                  name="gender"
-                  required
-                  variant="radio"
-                  options={admissionSelectOptions.gender}
-                />
-                <AdmissionField
-                  label="Admission Date"
-                  name="admission_date"
-                  required
-                  placeholder="Enter Admission Date"
-                />
-              </AdmissionFormSection>
+                        if (
+                          index !== activeAdmissionStep + 1 ||
+                          !validateAdmissionStep()
+                        ) {
+                          return;
+                        }
 
-              <AdmissionFormSection title="FEE DETAILS">
-                <AdmissionField
-                  label="Application Amount"
-                  name="amount"
-                  visualRequired
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  min="0"
-                  digitsOnly
-                  placeholder="Enter Application Amount"
+                        if (index === admissionSteps.length - 1) {
+                          setAdmissionPayload(buildAdmissionPayload());
+                        }
+
+                        setActiveAdmissionStep(index);
+                        setSubmissionStatus({ type: "", message: "" });
+                      }}
+                    >
+                      <span>{index + 1}</span>
+                      <b>{step.title}</b>
+                    </button>
+                  ))}
+                </div>
+
+                <div className={styles.stepCardHeader}>
+                  <div className={styles.stepCardIcon}>
+                    <Image
+                      src="/images/logo.webp"
+                      alt="Sri Chaitanya School"
+                      width={38}
+                      height={38}
+                    />
+                  </div>
+                  <div>
+                    <h2>{admissionSteps[activeAdmissionStep].heading}</h2>
+                    <p>{admissionSteps[activeAdmissionStep].description}</p>
+                    {apiError ? (
+                      <p className={styles.apiNotice}>{apiError}</p>
+                    ) : null}
+                  </div>
+                  <span>
+                    Step {activeAdmissionStep + 1} of {admissionSteps.length}
+                  </span>
+                </div>
+                <input type="hidden" name="incentive_amount" value="0" />
+                <input type="hidden" name="longitude" value="0" />
+                <input type="hidden" name="latitude" value="0" />
+                <input type="hidden" name="added_ip" value="0.0.0.0" />
+                <input
+                  type="hidden"
+                  name="referred_by"
+                  value={referredEmployeeId}
                 />
+                <input type="hidden" name="payment_status" value="PENDING" />
+                <input type="hidden" name="online_transaction_no" value="" />
+                <input
+                  type="hidden"
+                  name="online_transaction_type"
+                  value="ONLINE"
+                />
+                <input type="hidden" name="order_id" value="" />
+
+                <AdmissionFormSection
+                  active={activeAdmissionStep === 0}
+                  stepIndex={0}
+                >
                   <AdmissionField
-                    label="Admission Confirmation Amount"
-                    name="admission_amount"
-                    visualRequired
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    min="0"
-                    digitsOnly
-                    placeholder="Enter Admission Confirmation Amount"
+                    label="Academic Year"
+                    name="academic_year"
+                    required
+                    placeholder={
+                      loadingFields.academicYears
+                        ? "Loading Academic Years..."
+                        : "Select Academic Year*"
+                    }
+                    options={dropdownOptions.academicYears}
+                    value={formValues.academic_year}
+                    onChange={(event) =>
+                      handleAcademicYearChange(event.target.value)
+                    }
+                    disabled={loadingFields.academicYears}
+                  />
+                  <AdmissionField
+                    label="State"
+                    name="state_id"
+                    required
+                    placeholder={
+                      loadingFields.states
+                        ? "Loading States..."
+                        : "Select State*"
+                    }
+                    options={dropdownOptions.states}
+                    value={formValues.state_id}
+                    onChange={(event) => handleStateChange(event.target.value)}
+                    disabled={loadingFields.states}
+                  />
+                  <AdmissionField
+                    label="City"
+                    name="city_id"
+                    required
+                    placeholder={
+                      loadingFields.cities
+                        ? "Loading Cities..."
+                        : "Select City*"
+                    }
+                    options={dropdownOptions.cities}
+                    value={formValues.city_id}
+                    onChange={(event) => handleCityChange(event.target.value)}
+                    disabled={!formValues.state_id || loadingFields.cities}
+                  />
+                  <AdmissionField
+                    label="Branch"
+                    name="branch_id"
+                    required
+                    placeholder={
+                      loadingFields.campuses
+                        ? "Loading Branches..."
+                        : "Select Branch*"
+                    }
+                    options={dropdownOptions.campuses}
+                    value={formValues.branch_id}
+                    onChange={(event) => handleBranchChange(event.target.value)}
+                    disabled={
+                      !formValues.city_id ||
+                      !formValues.academic_year ||
+                      loadingFields.campuses
+                    }
+                  />
+                  <AdmissionField
+                    label="Board"
+                    name="board"
+                    required
+                    placeholder={
+                      loadingFields.boards
+                        ? "Loading Boards..."
+                        : "Please Select Board*"
+                    }
+                    options={dropdownOptions.boards}
+                    value={formValues.board}
+                    onChange={(event) => handleBoardChange(event.target.value)}
+                    disabled={!formValues.branch_id || loadingFields.boards}
+                  />
+                  <AdmissionField
+                    label="Class"
+                    name="class_id"
+                    required
+                    placeholder={
+                      loadingFields.classes
+                        ? "Loading Classes..."
+                        : "Select Class*"
+                    }
+                    options={dropdownOptions.classes}
+                    value={formValues.class_id}
+                    onChange={(event) => handleClassChange(event.target.value)}
+                    disabled={!formValues.board || loadingFields.classes}
+                  />
+                  <AdmissionField
+                    label="Orientation"
+                    name="orientation"
+                    required
+                    placeholder={
+                      loadingFields.orientations
+                        ? "Loading Orientations..."
+                        : "Select Orientation*"
+                    }
+                    options={dropdownOptions.orientations}
+                    value={formValues.orientation}
+                    onChange={(event) =>
+                      handleOrientationChange(event.target.value)
+                    }
+                    disabled={
+                      !formValues.class_id || loadingFields.orientations
+                    }
+                    helpText={admissionFieldHelp.orientation}
+                  />
+                  <AdmissionField
+                    label="Section"
+                    name="section"
+                    required
+                    placeholder={
+                      loadingFields.sections
+                        ? "Loading Sections..."
+                        : "Select Section*"
+                    }
+                    options={dropdownOptions.sections}
+                    value={formValues.section}
+                    onChange={(event) =>
+                      updateField("section", event.target.value)
+                    }
+                    disabled={!formValues.orientation || loadingFields.sections}
+                    helpText={admissionFieldHelp.section}
+                  />
+                  <AdmissionField
+                    label="Student Type"
+                    name="student_type"
+                    required
+                    placeholder={
+                      loadingFields.studentTypes
+                        ? "Loading Student Types..."
+                        : "Select Student Type*"
+                    }
+                    options={dropdownOptions.studentTypes}
+                    value={formValues.student_type}
+                    onChange={(event) =>
+                      handleStudentTypeChange(event.target.value)
+                    }
+                    disabled={
+                      !formValues.orientation || loadingFields.studentTypes
+                    }
+                    helpText={admissionFieldHelp.studentType}
+                  />
+                  <AdmissionField
+                    label="Application Score ID"
+                    name="application_score_id"
+                    placeholder="Enter Application Score ID"
+                    helpText={admissionFieldHelp.applicationScoreId}
                   />
                 </AdmissionFormSection>
 
-              <AdmissionFormSection title="PERSONAL DETAILS">
-                <AdmissionField
-                  label="Father Name"
-                  name="father_name"
-                  required
-                  placeholder="Enter Father Name"
-                />
-                <AdmissionField
-                  label="Mother Name"
-                  name="mother_name"
-                  required
-                  placeholder="Enter Mother Name"
-                />
-                <AdmissionField
-                  label="Parent Mobile No."
-                  name="phone_no"
-                  type="tel"
-                  required
-                  placeholder="Enter Parent Mobile No."
-                />
-                <AdmissionField
-                  label="Parent Email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="Enter Parent Email"
-                />
-                <AdmissionField
-                  label="Aadhaar No"
-                  name="aadhaar_num"
-                  required
-                  placeholder="Enter Aadhaar No"
-                />
-                <AdmissionField
-                  label="Father/Guardian Occupation"
-                  name="father_occupation"
-                  required
-                  placeholder="Enter Father/Guardian Occupation"
-                />
-                <AdmissionField
-                  label="Quota"
-                  name="quota_id"
-                  required
-                  placeholder="Select Quota*"
-                  options={admissionSelectOptions.quota}
-                />
-                <AdmissionField
-                  label="Admission Type"
-                  name="adms_type_id"
-                  required
-                  placeholder="Select Admission Type*"
-                  options={admissionSelectOptions.admissionType}
-                  value={admissionType}
-                  onChange={(event) => {
-                    setAdmissionType(event.target.value);
-                    setReferredMobile("");
-                  }}
-                />
-                {showProFields ? (
-                  <>
-                    <AdmissionField
-                      label="Referred By (Employee ID)"
-                      name="referred_employee_id"
-                      required
-                      placeholder="Referred By (Employee ID) - ex. HYDxxxxx"
-                    />
-                    <AdmissionField
-                      label="Referred Mobile"
-                      name="referred_mobile"
-                      type="tel"
-                      required
-                      placeholder="Enter Referred Mobile"
-                      inputMode="numeric"
-                      pattern="[0-9]{10}"
-                      maxLength={10}
-                      value={referredMobile}
-                      onChange={(event) =>
-                        setReferredMobile(
-                          event.target.value.replace(/\D/g, "").slice(0, 10),
-                        )
-                      }
-                    />
-                    <input type="hidden" name="incentive_amount" value="" />
-                    {showOtpField ? (
+                <AdmissionFormSection
+                  active={activeAdmissionStep === 1}
+                  stepIndex={1}
+                >
+                  <AdmissionField
+                    label="First Name"
+                    name="first_name"
+                    required
+                    placeholder="Enter First Name"
+                  />
+                  <AdmissionField
+                    label="Last Name"
+                    name="last_name"
+                    placeholder="Enter Last Name"
+                  />
+                  <AdmissionField
+                    label="Date Of Birth"
+                    name="dob"
+                    type="date"
+                    required
+                  />
+                  <AdmissionField
+                    label="Gender"
+                    name="gender"
+                    required
+                    variant="radio"
+                    options={admissionSelectOptions.gender}
+                  />
+                  <AdmissionField
+                    label="Admission Date"
+                    name="admission_date"
+                    type="date"
+                    required
+                    value={formValues.admission_date}
+                    onChange={(event) =>
+                      updateField("admission_date", event.target.value)
+                    }
+                    endAction={{
+                      label: "Today",
+                      onClick: () =>
+                        updateField("admission_date", getTodayDateInputValue()),
+                    }}
+                  />
+                  <AdmissionField
+                    label="Application Amount"
+                    name="amount"
+                    type="number"
+                    required
+                    inputMode="decimal"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter Application Amount"
+                    value={formValues.amount}
+                    onChange={(event) =>
+                      updateField(
+                        "amount",
+                        normalizeAmountInput(event.target.value),
+                      )
+                    }
+                  />
+                  <AdmissionField
+                    label="Admission Confirmation Amount"
+                    name="admission_amount"
+                    type="number"
+                    required
+                    inputMode="decimal"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter Admission Confirmation Amount"
+                    value={formValues.admission_amount}
+                    onChange={(event) =>
+                      updateField(
+                        "admission_amount",
+                        normalizeAmountInput(event.target.value),
+                      )
+                    }
+                  />
+                </AdmissionFormSection>
+
+                <AdmissionFormSection
+                  active={activeAdmissionStep === 2}
+                  stepIndex={2}
+                >
+                  <AdmissionField
+                    label="Father Name"
+                    name="father_name"
+                    required
+                    placeholder="Enter Father Name"
+                  />
+                  <AdmissionField
+                    label="Mother Name"
+                    name="mother_name"
+                    required
+                    placeholder="Enter Mother Name"
+                  />
+                  <AdmissionField
+                    label="Parent Mobile No."
+                    name="phone_no"
+                    type="tel"
+                    required
+                    placeholder="Enter Parent Mobile No."
+                  />
+                  <AdmissionField
+                    label="Parent Email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="Enter Parent Email"
+                  />
+                  <AdmissionField
+                    label="Aadhaar No"
+                    name="aadhaar_num"
+                    required
+                    placeholder="Enter Aadhaar No"
+                  />
+                  <AdmissionField
+                    label="Father/Guardian Occupation"
+                    name="father_occupation"
+                    required
+                    placeholder={
+                      loadingFields.occupations
+                        ? "Loading Occupations..."
+                        : "Select Father/Guardian Occupation*"
+                    }
+                    options={dropdownOptions.occupations}
+                    value={formValues.father_occupation}
+                    onChange={(event) =>
+                      updateField("father_occupation", event.target.value)
+                    }
+                    disabled={loadingFields.occupations}
+                  />
+                  <AdmissionField
+                    label="Quota"
+                    name="quota_id"
+                    required
+                    placeholder={
+                      loadingFields.quotas
+                        ? "Loading Quotas..."
+                        : "Select Quota*"
+                    }
+                    options={dropdownOptions.quotas}
+                    value={formValues.quota_id}
+                    onChange={(event) =>
+                      updateField("quota_id", event.target.value)
+                    }
+                    disabled={loadingFields.quotas}
+                    helpText={admissionFieldHelp.quota}
+                  />
+                  <AdmissionField
+                    label="Admission Type"
+                    name="adms_type_id"
+                    required
+                    placeholder="Select Admission Type*"
+                    options={dropdownOptions.admissionTypes}
+                    value={formValues.adms_type_id}
+                    onChange={(event) => {
+                      updateField("adms_type_id", event.target.value);
+                      setReferredEmployeeId("");
+                      setReferredMobile("");
+                      setProMobileNumbers([]);
+                      setProValidationMessage("");
+                    }}
+                    disabled={loadingFields.admissionTypes}
+                    helpText={admissionFieldHelp.admissionType}
+                  />
+                  {showProFields ? (
+                    <>
                       <AdmissionField
-                        label="OTP"
-                        name="referred_mobile_otp"
+                        label="Referred By (Employee ID)"
+                        name="referred_employee_id"
                         required
-                        placeholder="Enter OTP"
+                        placeholder="Referred By (Employee ID) - ex. HYDxxxxx"
+                        value={referredEmployeeId}
+                        onChange={(event) => {
+                          setReferredEmployeeId(
+                            event.target.value.toUpperCase(),
+                          );
+                          setReferredMobile("");
+                          setProMobileNumbers([]);
+                          setProValidationMessage("");
+                        }}
+                        verified={proMobileNumbers.length > 0}
+                        helpText={admissionFieldHelp.referredEmployee}
                       />
-                    ) : null}
-                  </>
-                ) : null}
-              </AdmissionFormSection>
+                      <AdmissionField
+                        label="Referred Mobile"
+                        name="referred_mobile"
+                        type="tel"
+                        required
+                        placeholder="Enter Referred Mobile"
+                        inputMode="numeric"
+                        pattern="[0-9]{10,12}"
+                        maxLength={12}
+                        value={referredMobile}
+                        onChange={(event) =>
+                          setReferredMobile(
+                            event.target.value.replace(/\D/g, "").slice(0, 12),
+                          )
+                        }
+                        disabled={!proMobileNumbers.length}
+                      />
+                      {proMobileNumbers.length &&
+                      referredMobileDigits.length >= 10 &&
+                      !mobileMatchesProEmployee ? (
+                        <p className={styles.fieldNotice}>
+                          Mobile number does not match the verified PRO employee
+                          record.
+                        </p>
+                      ) : null}
+                      {showOtpField ? (
+                        <AdmissionField
+                          label="OTP"
+                          name="referred_mobile_otp"
+                          required
+                          placeholder="Enter OTP"
+                        />
+                      ) : null}
+                    </>
+                  ) : null}
+                </AdmissionFormSection>
 
-              <AdmissionFormSection title="ADDRESS DETAILS">
-                <AdmissionField
-                  label="Door No"
-                  name="door_no"
-                  required
-                  placeholder="Enter Door No"
-                />
-                <AdmissionField
-                  label="Street"
-                  name="street"
-                  required
-                  placeholder="Enter Street"
-                />
-                <AdmissionField
-                  label="Area"
-                  name="area"
-                  required
-                  placeholder="Enter Area"
-                />
-                <AdmissionField
-                  label="Pin ID"
-                  name="pin_id"
-                  type="number"
-                  required
-                  placeholder="Enter Pin ID"
-                />
-                <AdmissionField
-                  label="District"
-                  name="district_id"
-                  required
-                  placeholder="Select District*"
-                  options={admissionSelectOptions.district}
-                />
-                <AdmissionField
-                  label="Mandal"
-                  name="mandal_id"
-                  required
-                  placeholder="Select Mandal*"
-                  options={admissionSelectOptions.mandal}
-                />
-                <AdmissionField
-                  label="Landmark"
-                  name="landmark"
-                  placeholder="Enter Landmark"
-                />
-                <AdmissionField
-                  label="Address Type"
-                  name="addrs_type"
-                  required
-                  placeholder="Select Address Type*"
-                  options={[{ label: "Permanent", value: "PERM" }]}
-                />
-              </AdmissionFormSection>
+                <AdmissionFormSection
+                  active={activeAdmissionStep === 3}
+                  stepIndex={3}
+                >
+                  <AdmissionField
+                    label="Door No"
+                    name="door_no"
+                    required
+                    placeholder="Enter Door No"
+                  />
+                  <AdmissionField
+                    label="Street"
+                    name="street"
+                    required
+                    placeholder="Enter Street"
+                  />
+                  <AdmissionField
+                    label="Area"
+                    name="area"
+                    required
+                    placeholder="Enter Area"
+                  />
+                  <AdmissionField
+                    label="Pin ID"
+                    name="pin_id"
+                    type="number"
+                    required
+                    placeholder="Enter Pin ID"
+                  />
+                  <AdmissionField
+                    label="District"
+                    name="district_id"
+                    required
+                    placeholder={
+                      loadingFields.districts
+                        ? "Loading Districts..."
+                        : "Select District*"
+                    }
+                    options={dropdownOptions.districts}
+                    value={formValues.district_id}
+                    onChange={(event) =>
+                      handleDistrictChange(event.target.value)
+                    }
+                    disabled={!formValues.state_id || loadingFields.districts}
+                  />
+                  <AdmissionField
+                    label="Mandal"
+                    name="mandal_id"
+                    required
+                    placeholder={
+                      loadingFields.mandals
+                        ? "Loading Mandals..."
+                        : "Select Mandal*"
+                    }
+                    options={dropdownOptions.mandals}
+                    value={formValues.mandal_id}
+                    onChange={(event) =>
+                      updateField("mandal_id", event.target.value)
+                    }
+                    disabled={!formValues.district_id || loadingFields.mandals}
+                  />
+                  <AdmissionField
+                    label="Landmark"
+                    name="landmark"
+                    placeholder="Enter Landmark"
+                  />
+                  <AdmissionField
+                    label="Address Type"
+                    name="addrs_type"
+                    required
+                    placeholder="Select Address Type*"
+                    options={[{ label: "Permanent", value: "PERM" }]}
+                  />
+                </AdmissionFormSection>
 
-              <button className={styles.admissionSubmitButton} type="submit">
-                SUBMIT &amp; PAY
-              </button>
-            </form>
+                <div
+                  className={`${styles.paymentForm} ${
+                    activeAdmissionStep === 4
+                      ? styles.admissionFormSectionActive
+                      : styles.admissionFormSectionHidden
+                  }`}
+                  data-step-index={4}
+                >
+                  <div className={styles.paymentSummary}>
+                    {/* <div className={styles.paymentSummaryHeader}>
+                      <div>
+                        <span>Payment Summary</span>
+                        <strong>Admission fee checkout</strong>
+                      </div>
+                      <b>Amount due: {paymentAmount}</b>
+                    </div> */}
+
+                    <div className={styles.paymentReviewLayout}>
+                      <div className={styles.paymentDetailsList}>
+                        <div className={styles.paymentRow}>
+                          <span>
+                            Academic Year <strong>*</strong>
+                          </span>
+                          <b>{selectedAcademicYearLabel}</b>
+                        </div>
+                        <div className={styles.paymentRow}>
+                          <span>
+                            Fee Type <strong>*</strong>
+                          </span>
+                          <b>Admission_Fee</b>
+                        </div>
+                        <div className={styles.paymentRow}>
+                          <span>Application Amount</span>
+                          <b>{formatIndianCurrency(formValues.amount)}</b>
+                        </div>
+                        <div className={styles.paymentRow}>
+                          <span>Admission Confirmation Amount</span>
+                          <b>
+                            {formatIndianCurrency(formValues.admission_amount)}
+                          </b>
+                        </div>
+                      </div>
+
+                      <div className={styles.paymentCheckoutPanel}>
+                        <div className={styles.paymentTotalRow}>
+                          <span>
+                            Amount <strong>*</strong>
+                          </span>
+                          <b>{paymentAmountDisplay}</b>
+                        </div>
+                        <div className={styles.gatewayPanel}>
+                          <span>
+                            Payment Gateway <strong>*</strong>
+                          </span>
+                          <label className={styles.gatewayOption}>
+                            <input
+                              type="radio"
+                              name="payment_gateway"
+                              value="Razorpay"
+                              checked={paymentGateway === "Razorpay"}
+                              onChange={(event) =>
+                                setPaymentGateway(event.target.value)
+                              }
+                              required
+                            />
+                            <Image
+                              src={razorpayImage}
+                              alt="Razorpay"
+                              className={styles.gatewayLogo}
+                              width={112}
+                              height={24}
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {submissionStatus.message ? (
+                    <p
+                      className={`${styles.submissionNotice} ${
+                        styles[submissionStatus.type] || ""
+                      }`}
+                    >
+                      {submissionStatus.message}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className={styles.wizardActions}>
+                  <button
+                    className={styles.wizardBackButton}
+                    type="button"
+                    onClick={goToPreviousAdmissionStep}
+                    disabled={
+                      activeAdmissionStep === 0 || isSubmittingAdmission
+                    }
+                  >
+                    Back
+                  </button>
+                  {activeAdmissionStep < admissionSteps.length - 1 ? (
+                    <button
+                      className={styles.wizardContinueButton}
+                      type="button"
+                      onClick={goToNextAdmissionStep}
+                    >
+                      Save &amp; Continue
+                    </button>
+                  ) : (
+                    <button
+                      className={styles.paymentSubmitButton}
+                      type="button"
+                      onClick={handlePaymentSubmit}
+                      disabled={isSubmittingAdmission}
+                    >
+                      {isSubmittingAdmission ? "SUBMITTING..." : "SUBMIT"}
+                    </button>
+                  )}
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 

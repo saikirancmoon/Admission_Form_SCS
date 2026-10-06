@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -103,12 +104,12 @@ export default function Home2Hero() {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className={styles.actions}
                   >
-                    <button className={styles.primaryBtn}>
+                    <Link href="/home2/facilities" className={styles.primaryBtn}>
                       Explore Campus <ArrowRight size={18} />
-                    </button>
-                    <button className={styles.secondaryBtn}>
+                    </Link>
+                    <Link href="/home2/admissions" className={styles.secondaryBtn}>
                       Admissions <ArrowRight size={18} />
-                    </button>
+                    </Link>
                   </motion.div>
                 </div>
 
@@ -208,9 +209,9 @@ export default function Home2Hero() {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className={styles.actions}
                   >
-                    <button className={styles.primaryBtn}>
+                    <Link href="/home2/facilities" className={styles.primaryBtn}>
                       Take a Tour <ArrowRight size={18} />
-                    </button>
+                    </Link>
                   </motion.div>
                 </div>
               <div className={styles.centerAsset}>

@@ -4635,6 +4635,7 @@
 .admissionFormOnly {
   position: relative;
   z-index: 1;
+  width: min(100%, 1040px);
   max-width: 1040px;
   margin: 0 auto;
   padding: 3rem 0 4rem;
@@ -4680,31 +4681,165 @@
   padding: 2.5rem;
   color: #071028;
   background: #ffffff;
+  border: 1px solid #e2ebf8;
+  border-radius: 12px;
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.08);
+}
+
+.admissionFormOnly .enquiryPanel {
+  width: 100%;
+  min-height: 596px;
+  padding: 2.65rem 2.5rem 2.4rem;
 }
 
 .admissionForm {
   display: grid;
-  gap: 1.5rem;
+  gap: 1.35rem;
+  min-height: 100%;
 }
 
-.admissionFormHeader {
+.stepper {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+  margin: -4.2rem auto 1rem;
+  width: min(980px, 100%);
+}
+
+.stepperItem {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: #64748b;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.stepperItem::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  right: calc(50% + 28px);
+  left: calc(-50% + 28px);
+  height: 2px;
+  background: #cbd7e8;
+}
+
+.stepperItem:first-child::before {
+  display: none;
+}
+
+.stepperItem span {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: #94a3b8;
+  box-shadow: 0 7px 16px rgba(15, 23, 42, 0.14);
+}
+
+.stepperItem b {
+  overflow-wrap: anywhere;
   text-align: center;
 }
 
-.admissionFormHeader h2 {
-  margin-bottom: 0.45rem;
-  color: #071028;
-  font-size: 2rem;
-  line-height: 1.1;
-  font-weight: 900;
-  letter-spacing: 0;
+.stepperItemActive {
+  color: #0b5fe8;
 }
 
-.admissionFormHeader p {
+.stepperItemActive span,
+.stepperItemComplete span {
+  background: #0b5fe8;
+}
+
+.stepperItemComplete::before,
+.stepperItemActive::before {
+  background: #0b5fe8;
+}
+
+.stepCardHeader {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.stepCardIcon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  color: #0b5fe8;
+  background: #eaf3ff;
+  overflow: hidden;
+}
+
+.stepCardIcon img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.stepCardHeader h2 {
+  margin-bottom: 0.35rem;
+  color: #071c55;
+  font-size: 1.35rem;
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.stepCardHeader p {
   margin: 0;
   color: #64748b;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
+}
+
+.stepCardHeader > span {
+  align-self: start;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  color: #172554;
+  background: #eaf3ff;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.apiNotice {
+  margin-top: 0.75rem !important;
+  color: #b42318 !important;
+}
+
+.fieldNotice {
+  grid-column: 1 / -1;
+  margin: -0.15rem 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: #b42318;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.enquiryPanel .fieldNotice {
+  margin-top: -0.15rem;
+  color: #dc2626;
+  line-height: 1.35;
 }
 
 .admissionFormSection {
@@ -4713,6 +4848,14 @@
   min-width: 0;
   padding: 0;
   border: 0;
+}
+
+.admissionFormSectionHidden {
+  display: none;
+}
+
+.admissionFormSectionActive {
+  display: grid;
 }
 
 .admissionFormSection legend {
@@ -4735,10 +4878,45 @@
   min-width: 0;
 }
 
-.admissionFormField > span {
+.fieldLabel {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  width: fit-content;
   color: #334155;
   font-size: 0.82rem;
   font-weight: 800;
+}
+
+.fieldInfoButton {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  color: #2563eb;
+  background: transparent;
+  cursor: pointer;
+}
+
+.fieldInfoButton:hover,
+.fieldInfoButton:focus-visible {
+  color: #184cd8;
+  outline: none;
+}
+
+.fieldHelpText {
+  margin-top: -0.2rem;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.inputShell {
+  position: relative;
+  min-width: 0;
 }
 
 .admissionFormField input,
@@ -4754,6 +4932,46 @@
   font-size: 0.92rem;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputShell input {
+  padding-right: 2.6rem;
+}
+
+.inputShell:has(.inputEndAction) input {
+  padding-right: 5.6rem;
+}
+
+.inputEndAction {
+  position: absolute;
+  top: 50%;
+  right: 0.45rem;
+  min-height: 32px;
+  padding: 0 0.75rem;
+  border: 1px solid rgba(24, 76, 216, 0.18);
+  border-radius: 999px;
+  color: #184cd8;
+  background: #eff6ff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.inputEndAction:hover,
+.inputEndAction:focus-visible {
+  border-color: rgba(24, 76, 216, 0.34);
+  background: #dbeafe;
+  outline: none;
+}
+
+.verifiedIcon {
+  position: absolute;
+  top: 50%;
+  right: 0.9rem;
+  color: #16a34a;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .admissionFormField input::-webkit-outer-spin-button,
@@ -4772,6 +4990,13 @@
 
 .admissionFormField input::placeholder {
   color: #94a3b8;
+}
+
+.admissionFormField input:disabled,
+.admissionFormField select:disabled {
+  cursor: not-allowed;
+  color: #94a3b8;
+  background: #f1f5f9;
 }
 
 .admissionFormField input:focus,
@@ -4829,6 +5054,302 @@
 .admissionSubmitButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 20px 40px rgba(24, 76, 216, 0.28);
+}
+
+.wizardActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.35rem;
+}
+
+.wizardActions:has(.paymentSubmitButton) {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.wizardBackButton,
+.wizardContinueButton {
+  min-height: 44px;
+  padding: 0 1.35rem;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
+}
+
+.wizardBackButton {
+  justify-self: start;
+  min-width: 78px;
+  border: 1px solid #b8cef0;
+  color: #184cd8;
+  background: #ffffff;
+}
+
+.wizardContinueButton {
+  margin-left: auto;
+  border: 0;
+  color: #ffffff;
+  background: #0b5fe8;
+  box-shadow: 0 16px 32px rgba(11, 95, 232, 0.24);
+}
+
+.wizardBackButton:hover,
+.wizardContinueButton:hover {
+  transform: translateY(-2px);
+}
+
+.wizardBackButton:disabled,
+.wizardContinueButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  box-shadow: none;
+}
+
+.paymentForm {
+  display: grid;
+  gap: 1.25rem;
+  color: #071028;
+}
+
+.paymentForm.admissionFormSectionHidden {
+  display: none;
+}
+
+.paymentSummary {
+  display: grid;
+  gap: 1rem;
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid rgba(24, 76, 216, 0.12);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(24, 76, 216, 0.08), transparent 34%),
+    #ffffff;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.08);
+}
+
+.paymentSummaryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #071c55, #184cd8);
+}
+
+.paymentSummaryHeader span {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.paymentSummaryHeader strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.paymentSummaryHeader b {
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.paymentReviewLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.58fr);
+  gap: 0.85rem;
+}
+
+.paymentDetailsList {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.paymentRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: 1rem;
+  min-height: 48px;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #edf2fb;
+  border-radius: 12px;
+  background: rgba(248, 251, 255, 0.82);
+}
+
+.paymentRow > span {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.paymentRow strong {
+  color: #ef4444;
+}
+
+.paymentRow b {
+  color: #071c55;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.paymentCheckoutPanel {
+  display: grid;
+  align-content: stretch;
+  gap: 0.75rem;
+}
+
+.paymentTotalRow {
+  display: grid;
+  align-content: center;
+  gap: 0.35rem;
+  min-height: 104px;
+  padding: 1rem;
+  border: 1px solid rgba(24, 76, 216, 0.18);
+  border-radius: 14px;
+  border-color: rgba(24, 76, 216, 0.22);
+  background: linear-gradient(180deg, #eef5ff, #ffffff);
+}
+
+.paymentTotalRow span {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.paymentTotalRow b {
+  color: #0b5fe8;
+  font-size: 1.75rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.gatewayPanel {
+  display: grid;
+  gap: 0.55rem;
+  align-content: center;
+  min-height: 88px;
+  padding: 1rem;
+  border: 1px solid #edf2fb;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.gatewayPanel > span {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.gatewayOption {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  min-height: 30px;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid rgba(24, 76, 216, 0.16);
+  border-radius: 999px;
+  color: #071c55;
+  background: #f6f9ff;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.gatewayOption input {
+  width: 13px;
+  height: 13px;
+  accent-color: #184cd8;
+}
+
+.gatewayLogo {
+  width: 82px;
+  height: 17px;
+  object-fit: contain;
+}
+
+.paymentActions {
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.paymentSubmitButton,
+.secondaryActionButton {
+  min-height: 40px;
+  padding: 0 1.35rem;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
+}
+
+.paymentSubmitButton {
+  grid-column: 2;
+  justify-self: center;
+  min-width: 112px;
+  border: 0;
+  color: #ffffff;
+  background: #e43f67;
+  box-shadow: 0 12px 24px rgba(228, 63, 103, 0.22);
+}
+
+.secondaryActionButton {
+  border: 1px solid #dbe3ef;
+  color: #334155;
+  background: #ffffff;
+}
+
+.paymentSubmitButton:hover,
+.secondaryActionButton:hover {
+  transform: translateY(-2px);
+}
+
+.paymentSubmitButton:disabled,
+.secondaryActionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
+.submissionNotice {
+  width: min(620px, 100%);
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.submissionNotice.success {
+  color: #166534;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+}
+
+.submissionNotice.error {
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
 }
 
 .galleryMosaic {
@@ -6158,11 +6679,34 @@
 @media (max-width: 900px) {
   .admissionFormOnly {
     max-width: 720px;
+    min-width: 0;
     padding-top: 2rem;
   }
 
   .enquiryPanel {
     padding: 2rem;
+  }
+
+  .stepper {
+    gap: 0.55rem;
+    margin-top: -3.2rem;
+  }
+
+  .stepperItem {
+    font-size: 0.68rem;
+  }
+
+  .stepperItem b {
+    line-height: 1.25;
+  }
+
+  .stepCardHeader {
+    grid-template-columns: auto 1fr;
+  }
+
+  .stepCardHeader > span {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
 
   .threeCards {
@@ -6296,6 +6840,10 @@
     padding-bottom: 2.5rem;
   }
 
+  .admissionFormOnly .enquiryPanel {
+    min-height: auto;
+  }
+
   .enquiryPanel {
     padding: 1.5rem;
     border-radius: 14px;
@@ -6309,6 +6857,116 @@
 
   .admissionFormHeader h2 {
     font-size: 1.75rem;
+  }
+
+  .stepper {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.35rem;
+    overflow: visible;
+    justify-content: stretch;
+    width: 100%;
+    margin-top: -2.85rem;
+    padding-bottom: 0.2rem;
+  }
+
+  .stepper::before {
+    content: "";
+    position: absolute;
+    top: 17px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    border-radius: 999px;
+    background: #cbd7e8;
+  }
+
+  .stepperItem {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    gap: 0.35rem;
+    font-size: 0.62rem;
+    line-height: 1.2;
+  }
+
+  .stepperItem::before {
+    display: none;
+  }
+
+  .stepperItem span {
+    width: 34px;
+    height: 34px;
+    font-size: 0.78rem;
+  }
+
+  .stepperItem b {
+    display: block;
+    width: 100%;
+    min-height: 2.4em;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+  }
+
+  .stepperItemActive b {
+    color: #0b5fe8;
+  }
+
+  .stepCardHeader {
+    align-items: start;
+  }
+
+  .stepCardHeader h2 {
+    font-size: 1.15rem;
+  }
+
+  .wizardActions {
+    display: grid;
+  }
+
+  .wizardActions:has(.paymentSubmitButton) {
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .wizardContinueButton,
+  .paymentSubmitButton,
+  .wizardBackButton {
+    width: 100%;
+  }
+
+  .wizardBackButton {
+    width: auto;
+  }
+
+  .paymentSubmitButton {
+    grid-column: 2;
+    width: auto;
+    max-width: 240px;
+    justify-self: center;
+  }
+
+  .paymentSummary {
+    width: 100%;
+    padding: 0.85rem;
+  }
+
+  .paymentSummaryHeader {
+    display: grid;
+  }
+
+  .paymentReviewLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .paymentTotalRow,
+  .gatewayPanel {
+    min-height: auto;
+  }
+
+  .paymentSummaryHeader {
+    align-items: start;
   }
 }
 
@@ -6345,6 +7003,31 @@
   .admissionFormField select,
   .admissionRadioGroup {
     min-height: 46px;
+  }
+
+  .paymentSummary {
+    padding: 0.75rem;
+    border-radius: 14px;
+  }
+
+  .paymentRow {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: 0.65rem;
+    padding: 0.72rem 0.75rem;
+  }
+
+  .paymentRow > span,
+  .gatewayPanel > span,
+  .paymentTotalRow span {
+    font-size: 0.75rem;
+  }
+
+  .paymentRow b {
+    font-size: 0.86rem;
+  }
+
+  .paymentTotalRow b {
+    font-size: 1.55rem;
   }
 
   .aboutStory h2,
