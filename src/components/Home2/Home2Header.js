@@ -57,7 +57,7 @@ export default function Home2Header() {
             <button className={styles.searchBtn}>
               <Search size={18} />
             </button>
-            <Link href="/home2/admissions" className={styles.ctaBtn}>
+            <Link href="/admissions" className={styles.ctaBtn}>
               Enquire Now <ArrowRight size={16} />
             </Link>
           </div>
@@ -94,7 +94,7 @@ export default function Home2Header() {
 
         <div className={styles.sidebarFooter}>
           <Link
-            href="/home2/admissions"
+            href="/admissions"
             className={styles.sidebarCtaBtn}
             onClick={closeSidebar}
           >

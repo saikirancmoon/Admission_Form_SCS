@@ -1,6 +1,9 @@
 .home2-theme {
   --color-primary: #184CD8;
   --color-secondary: #0D47A1;
+  --h2-primary: #184CD8;
+  --h2-accent-yellow: #FBBF24;
+  --h2-text-muted: #A8B3CF;
   --font-display: var(--font-outfit);
   --font-sans: var(--font-inter);
   color: #ffffff;

@@ -27,22 +27,22 @@ export default function MobileBottomNav() {
 
   return (
     <div className={styles.bottomNav}>
-      <Link href="/home2" className={`${styles.navItem} ${pathname === "/home2" ? styles.active : ""}`}>
+      <Link href="/" className={`${styles.navItem} ${pathname === "/" ? styles.active : ""}`}>
         <Home size={24} />
         <span>Home</span>
       </Link>
       
-      <Link href="/home2/academics" className={`${styles.navItem} ${pathname === "/home2/academics" ? styles.active : ""}`}>
+      <Link href="/academics" className={`${styles.navItem} ${pathname === "/academics" ? styles.active : ""}`}>
         <BookOpen size={24} />
         <span>Academics</span>
       </Link>
       
-      <Link href="/home2/gallery" className={`${styles.navItem} ${pathname === "/home2/gallery" ? styles.active : ""}`}>
+      <Link href="/gallery" className={`${styles.navItem} ${pathname === "/gallery" ? styles.active : ""}`}>
         <ImageIcon size={24} />
         <span>Gallery</span>
       </Link>
       
-      <Link href="/home2/contact" className={`${styles.navItem} ${pathname === "/home2/contact" ? styles.active : ""}`}>
+      <Link href="/contact" className={`${styles.navItem} ${pathname === "/contact" ? styles.active : ""}`}>
         <Phone size={24} />
         <span>Contact</span>
       </Link>

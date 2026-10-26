@@ -24,13 +24,13 @@ import {
 } from "lucide-react";
 
 export const home2Routes = [
-  { label: "Home", href: "/home2" },
-  { label: "About Us", href: "/home2/about" },
-  { label: "Academics", href: "/home2/academics" },
-  { label: "Facilities", href: "/home2/facilities" },
-  { label: "Admissions", href: "/home2/admissions" },
-  { label: "Gallery", href: "/home2/gallery" },
-  { label: "Contact Us", href: "/home2/contact" },
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Academics", href: "/academics" },
+  { label: "Facilities", href: "/facilities" },
+  { label: "Admissions", href: "/admissions" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export const home2InnerPageSlugs = [
@@ -191,7 +191,7 @@ export const home2InnerPages = {
     },
   },
   admissions: {
-    eyebrow: "Admissions 2024 - 2025",
+    eyebrow: "Admissions 2026 - 2027",
     title: "A simple path to join the next generation",
     highlight: "join",
     intro:

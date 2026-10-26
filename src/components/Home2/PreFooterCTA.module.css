@@ -160,6 +160,9 @@
     max-width: 100%;
     margin-top: 150px;
   }
+  .title {
+    white-space: normal;
+  }
   .admissionBlock {
     top: 2rem;
     right: 2rem;

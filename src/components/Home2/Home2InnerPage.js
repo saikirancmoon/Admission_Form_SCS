@@ -82,10 +82,10 @@ function Hero({ page, variant = "split" }) {
             {page.intro}
           </motion.p>
           <motion.div className={styles.heroActions} variants={fadeUp}>
-            <Link href="/home2/admissions" className={styles.primaryBtn}>
+            <Link href="/admissions" className={styles.primaryBtn}>
               Enquire Now <ArrowRight size={18} />
             </Link>
-            <Link href="/home2/admissions" className={styles.secondaryBtn}>
+            <Link href="/admissions" className={styles.secondaryBtn}>
               Plan Visit <ArrowRight size={18} />
             </Link>
           </motion.div>
@@ -1643,16 +1643,14 @@ function AdmissionsPage({ page }) {
 
     const payrollId = referredEmployeeId.trim();
 
-    setProMobileNumbers([]);
-    setProValidationMessage("");
-
-    if (!payrollId) {
-      return;
-    }
-
     const timeoutId = setTimeout(() => {
-      validateProEmployee(payrollId);
-    }, 600);
+      setProMobileNumbers([]);
+      setProValidationMessage("");
+
+      if (payrollId) {
+        validateProEmployee(payrollId);
+      }
+    }, payrollId ? 600 : 0);
 
     return () => clearTimeout(timeoutId);
   }, [referredEmployeeId, showProFields]);

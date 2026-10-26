@@ -104,10 +104,10 @@ export default function Home2Hero() {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className={styles.actions}
                   >
-                    <Link href="/home2/facilities" className={styles.primaryBtn}>
+                    <Link href="/facilities" className={styles.primaryBtn}>
                       Explore Campus <ArrowRight size={18} />
                     </Link>
-                    <Link href="/home2/admissions" className={styles.secondaryBtn}>
+                    <Link href="/admissions" className={styles.secondaryBtn}>
                       Admissions <ArrowRight size={18} />
                     </Link>
                   </motion.div>
@@ -209,7 +209,7 @@ export default function Home2Hero() {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className={styles.actions}
                   >
-                    <Link href="/home2/facilities" className={styles.primaryBtn}>
+                    <Link href="/facilities" className={styles.primaryBtn}>
                       Take a Tour <ArrowRight size={18} />
                     </Link>
                   </motion.div>

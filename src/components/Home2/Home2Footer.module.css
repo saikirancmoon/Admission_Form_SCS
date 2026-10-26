@@ -199,3 +199,18 @@
 .legalLinks a:hover {
   color: white;
 }
+
+@media (max-width: 768px) {
+  .footer {
+    padding-bottom: calc(2rem + 64px + env(safe-area-inset-bottom));
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .legalLinks {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

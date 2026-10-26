@@ -91,7 +91,7 @@ export default function ParentStories() {
                 </button>
 
                 <div className={styles.cardContent}>
-                  <p className={styles.quote}>"{story.quote}"</p>
+                  <p className={styles.quote}>&ldquo;{story.quote}&rdquo;</p>
                   <div className={styles.cardFooter}>
                     <span className={styles.author}>- {story.author}</span>
                     <div className={styles.stars}>

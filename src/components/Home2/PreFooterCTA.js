@@ -42,8 +42,8 @@ export default function PreFooterCTA() {
 
         <div className={styles.content}>
           <span className={styles.eyebrow}>READY TO SHAPE</span>
-          <h2 className={styles.title}>YOUR CHILD'S <span className={styles.highlight}>FUTURE?</span></h2>
-          <p className={styles.subtitle}>Admissions Open for Academic Year 2024-25. Join a community dedicated to academic excellence and holistic growth.</p>
+          <h2 className={styles.title}>YOUR CHILD&rsquo;S <span className={styles.highlight}>FUTURE?</span></h2>
+          <p className={styles.subtitle}>Admissions Open for Academic Year 2026-27. Join a community dedicated to academic excellence and holistic growth.</p>
           <button className={styles.applyBtn}>
             Apply Now <ArrowRight size={18} />
           </button>
@@ -52,7 +52,7 @@ export default function PreFooterCTA() {
         <div className={styles.admissionBlock}>
           <div>
             <span className={styles.admTitle}>Admissions</span>
-            <span className={styles.admYear}>2024 - 2025</span>
+            <span className={styles.admYear}>2026 - 2027</span>
           </div>
           <button className={styles.circleBtn}><ArrowRight size={20} color="#04061A" /></button>
         </div>

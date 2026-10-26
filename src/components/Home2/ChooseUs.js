@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Grid, Navigation } from "swiper/modules";
+import { Grid } from "swiper/modules";
 import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightSmall, BookOpen, Users, Trophy, Lightbulb, Globe, Laptop } from "lucide-react";
 import "swiper/css";
 import "swiper/css/grid";
-import "swiper/css/navigation";
 import styles from "./ChooseUs.module.css";
 
 // Register ScrollTrigger
@@ -83,8 +82,7 @@ const cardsData = [
 ];
 
 export default function ChooseUs() {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
   const containerRef = useRef(null);
   const leftColRef = useRef(null);
   const rightColRef = useRef(null);
@@ -130,10 +128,20 @@ export default function ChooseUs() {
           </div>
 
           <div className={styles.navButtons}>
-            <button ref={prevRef} className={styles.navBtn}>
+            <button
+              type="button"
+              className={styles.navBtn}
+              onClick={() => swiperInstance?.slidePrev()}
+              aria-label="Show previous benefits"
+            >
               <ArrowLeft size={20} />
             </button>
-            <button ref={nextRef} className={styles.navBtn}>
+            <button
+              type="button"
+              className={styles.navBtn}
+              onClick={() => swiperInstance?.slideNext()}
+              aria-label="Show next benefits"
+            >
               <ArrowRight size={20} />
             </button>
           </div>
@@ -142,22 +150,14 @@ export default function ChooseUs() {
         {/* Right Column: Swiper Grid */}
         <div className={styles.rightCol} ref={rightColRef}>
           <Swiper
-            modules={[Grid, Navigation]}
+            modules={[Grid]}
             slidesPerView={3}
             grid={{
               rows: 2,
               fill: 'row',
             }}
             spaceBetween={20}
-            navigation={{
-              prevEl: prevRef.current,
-              nextEl: nextRef.current,
-            }}
-            onBeforeInit={(swiper) => {
-              // Attach navigation to custom refs
-              swiper.params.navigation.prevEl = prevRef.current;
-              swiper.params.navigation.nextEl = nextRef.current;
-            }}
+            onSwiper={setSwiperInstance}
             className={styles.swiperContainer}
           >
             {cardsData.map((card) => (

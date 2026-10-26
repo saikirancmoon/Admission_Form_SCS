@@ -423,6 +423,13 @@
 }
 
 /* Responsiveness */
+@media (max-width: 1200px) {
+  .rightNav,
+  .playVideoBtn {
+    display: none;
+  }
+}
+
 @media (max-width: 1024px) {
   .container {
     padding: 0 3rem 0 4rem;
@@ -436,20 +443,21 @@
   .statsBar {
     padding: 1rem 2rem;
   }
-  .playVideoBtn {
-    display: none;
-  }
-  .rightNav {
-    display: none;
-  }
 }
 
 @media (max-width: 768px) {
+  .heroSection,
+  .swiperContainer {
+    height: max(100svh, 860px);
+    min-height: 860px;
+  }
+
   .container {
     padding: 0 1.5rem 0 3rem;
   }
   .slideWrapper {
     padding-top: 100px;
+    padding-bottom: 300px;
     align-items: flex-start;
   }
   .title {
@@ -468,7 +476,7 @@
     justify-content: center;
   }
   .statsBarWrapper {
-    bottom: 5rem; /* Make room for bottom nav */
+    bottom: calc(5rem + env(safe-area-inset-bottom)); /* Make room for bottom nav */
     max-width: 95%;
   }
   .statsBar {

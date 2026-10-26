@@ -1,7 +1,5 @@
-import { Inter, Outfit, Plus_Jakarta_Sans, Poppins } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
-import "../styles/design-tokens.css";
-import "../styles/animations.css";
 import LenisProvider from "../components/LenisProvider";
 
 const inter = Inter({
@@ -12,17 +10,6 @@ const inter = Inter({
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
-});
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-plus-jakarta",
-});
-
-const poppins = Poppins({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-poppins",
 });
 
 export const metadata = {
@@ -38,7 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${outfit.variable} ${plusJakarta.variable} ${poppins.variable}`}
+      className={`${inter.variable} ${outfit.variable}`}
     >
       <body>
         <LenisProvider>{children}</LenisProvider>

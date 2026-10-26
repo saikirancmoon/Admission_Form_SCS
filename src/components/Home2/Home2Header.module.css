@@ -298,6 +298,18 @@
 }
 
 @media (max-width: 768px) {
+  .header {
+    padding: 1rem 0;
+  }
+  .container {
+    padding: 0 1rem;
+  }
+  .logo {
+    gap: 0.6rem;
+  }
+  .logoText strong {
+    font-size: 0.95rem;
+  }
   .logoText span {
     display: none;
   }

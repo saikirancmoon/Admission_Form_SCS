@@ -29,20 +29,20 @@ export default function NewsEvents() {
   const newsList = [
     {
       id: 1,
-      title: "Science Exhibition 2024",
-      date: "10 May 2024",
+      title: "Science Exhibition 2026",
+      date: "10 May 2026",
       image: "https://images.unsplash.com/photo-1564069114553-7215e1ff1890?auto=format&fit=crop&q=80&w=200",
     },
     {
       id: 2,
-      title: "Sports Meet 2024",
-      date: "05 May 2024",
+      title: "Sports Meet 2026",
+      date: "05 May 2026",
       image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=200",
     },
     {
       id: 3,
-      title: "Education Summit 2024",
-      date: "01 May 2024",
+      title: "Education Summit 2026",
+      date: "01 May 2026",
       image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=200",
     },
   ];
@@ -73,8 +73,8 @@ export default function NewsEvents() {
             <Play fill="white" size={20} />
           </button>
           <div className={styles.featuredContent}>
-            <h3>Annual Day Celebration 2024</h3>
-            <span className={styles.date}>15 May 2024</span>
+            <h3>Annual Day Celebration 2026</h3>
+            <span className={styles.date}>15 May 2026</span>
             <p>A spectacular celebration of talent, creativity and excellence.</p>
           </div>
           <div className={styles.featuredArrow}>
